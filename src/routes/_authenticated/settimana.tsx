@@ -25,9 +25,9 @@ function weekQuery(date: string) {
 
 export const Route = createFileRoute("/_authenticated/settimana")({
   validateSearch: (search: Record<string, unknown>) => ({
-    data: typeof search.data === "string" && /^\d{4}-\d{2}-\d{2}$/.test(search.data) && isValid(parseISO(search.data)) ? search.data : todayISO(),
+    data: typeof search["data"] === "string" && /^\d{4}-\d{2}-\d{2}$/.test(search["data"]) && isValid(parseISO(search["data"])) ? search["data"] : todayISO(),
   }),
-  loaderDeps: ({ search }) => ({ data: search.data }),
+  loaderDeps: ({ search }) => ({ data: search["data"] }),
   loader: ({ context, deps }) => context.queryClient.ensureQueryData(weekQuery(deps.data)),
   head: () => ({ meta: [
     { title: "Menu della settimana — Michì" },

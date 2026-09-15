@@ -18,8 +18,8 @@ const pricesQuery = (date: string) => queryOptions({
   },
 });
 export const Route = createFileRoute("/_authenticated/prezzi")({
-  validateSearch: (search: Record<string, unknown>) => ({ data: typeof search.data === "string" && /^\d{4}-\d{2}-\d{2}$/.test(search.data) && !Number.isNaN(Date.parse(search.data)) ? search.data : todayISO() }),
-  loaderDeps: ({ search }) => ({ data: search.data }),
+  validateSearch: (search: Record<string, unknown>) => ({ data: typeof search["data"] === "string" && /^\d{4}-\d{2}-\d{2}$/.test(search["data"]) && !Number.isNaN(Date.parse(search["data"])) ? search["data"] : todayISO() }),
+  loaderDeps: ({ search }) => ({ data: search["data"] }),
   loader: ({ context, deps }) => context.queryClient.ensureQueryData(pricesQuery(deps.data)),
   head: () => ({ meta: [
     { title: "Prezzi dei menu — Michì" },
