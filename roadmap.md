@@ -13,4 +13,4 @@
 
 - [x] Creare homepage pubblica con informazioni Google e accesso separato alla gestione
 
-- [ ] Aggiungere e verificare /orari con fasce e menu a scelta manuale condivisi con /menu
+- [x] Aggiungere e verificare /orari con fasce e menu a scelta manuale condivisi con /menu
