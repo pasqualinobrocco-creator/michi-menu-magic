@@ -9,4 +9,4 @@
 - [x] Pubblicare le modifiche
 
 - [x] Disabilitare le registrazioni pubbliche alla gestione
-- [ ] Verificare il logo ufficiale PNG senza accesso su /menu
+- [x] Verificare il logo ufficiale PNG senza accesso su /menu
