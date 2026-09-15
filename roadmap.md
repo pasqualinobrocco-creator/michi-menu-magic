@@ -15,4 +15,4 @@
 
 - [x] Aggiungere e verificare /orari con fasce e menu a scelta manuale condivisi con /menu
 
-- [ ] Creare e verificare la settimana gestionale con sette giorni, grafiche e copia testo
+- [x] Creare e verificare la settimana gestionale con sette giorni, grafiche e copia testo
