@@ -18,6 +18,7 @@ import { Route as AuthenticatedArchivioRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedFissiRouteImport } from './routes/_authenticated/fissi'
 import { Route as AuthenticatedGestioneRouteImport } from './routes/_authenticated/gestione'
 import { Route as AuthenticatedImpostazioniRouteImport } from './routes/_authenticated/impostazioni'
+import { Route as AuthenticatedPrezziRouteImport } from './routes/_authenticated/prezzi'
 import { Route as AuthenticatedSettimanaRouteImport } from './routes/_authenticated/settimana'
 
 const IndexRoute = IndexRouteImport.update({
@@ -65,6 +66,11 @@ const AuthenticatedImpostazioniRoute =
     path: '/impostazioni',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedPrezziRoute = AuthenticatedPrezziRouteImport.update({
+  id: '/prezzi',
+  path: '/prezzi',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSettimanaRoute = AuthenticatedSettimanaRouteImport.update({
   id: '/settimana',
   path: '/settimana',
@@ -80,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/fissi': typeof AuthenticatedFissiRoute
   '/gestione': typeof AuthenticatedGestioneRoute
   '/impostazioni': typeof AuthenticatedImpostazioniRoute
+  '/prezzi': typeof AuthenticatedPrezziRoute
   '/settimana': typeof AuthenticatedSettimanaRoute
 }
 export interface FileRoutesByTo {
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/fissi': typeof AuthenticatedFissiRoute
   '/gestione': typeof AuthenticatedGestioneRoute
   '/impostazioni': typeof AuthenticatedImpostazioniRoute
+  '/prezzi': typeof AuthenticatedPrezziRoute
   '/settimana': typeof AuthenticatedSettimanaRoute
 }
 export interface FileRoutesById {
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/_authenticated/fissi': typeof AuthenticatedFissiRoute
   '/_authenticated/gestione': typeof AuthenticatedGestioneRoute
   '/_authenticated/impostazioni': typeof AuthenticatedImpostazioniRoute
+  '/_authenticated/prezzi': typeof AuthenticatedPrezziRoute
   '/_authenticated/settimana': typeof AuthenticatedSettimanaRoute
 }
 export interface FileRouteTypes {
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/fissi'
     | '/gestione'
     | '/impostazioni'
+    | '/prezzi'
     | '/settimana'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/fissi'
     | '/gestione'
     | '/impostazioni'
+    | '/prezzi'
     | '/settimana'
   id:
     | '__root__'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/_authenticated/fissi'
     | '/_authenticated/gestione'
     | '/_authenticated/impostazioni'
+    | '/_authenticated/prezzi'
     | '/_authenticated/settimana'
   fileRoutesById: FileRoutesById
 }
@@ -216,6 +228,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedImpostazioniRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/prezzi': {
+      id: '/_authenticated/prezzi'
+      path: '/prezzi'
+      fullPath: '/prezzi'
+      preLoaderRoute: typeof AuthenticatedPrezziRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settimana': {
       id: '/_authenticated/settimana'
       path: '/settimana'
@@ -231,6 +250,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFissiRoute: typeof AuthenticatedFissiRoute
   AuthenticatedGestioneRoute: typeof AuthenticatedGestioneRoute
   AuthenticatedImpostazioniRoute: typeof AuthenticatedImpostazioniRoute
+  AuthenticatedPrezziRoute: typeof AuthenticatedPrezziRoute
   AuthenticatedSettimanaRoute: typeof AuthenticatedSettimanaRoute
 }
 
@@ -239,6 +259,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFissiRoute: AuthenticatedFissiRoute,
   AuthenticatedGestioneRoute: AuthenticatedGestioneRoute,
   AuthenticatedImpostazioniRoute: AuthenticatedImpostazioniRoute,
+  AuthenticatedPrezziRoute: AuthenticatedPrezziRoute,
   AuthenticatedSettimanaRoute: AuthenticatedSettimanaRoute,
 }
 
