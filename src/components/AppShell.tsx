@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLogos } from "@/lib/logos";
 
 const NAV = [
-  { to: "/", label: "Oggi", icon: CalendarDays },
+  { to: "/gestione", label: "Oggi", icon: CalendarDays },
   { to: "/fissi", label: "Fissi", icon: Coffee },
   { to: "/archivio", label: "Archivio", icon: Archive },
   { to: "/impostazioni", label: "Impostazioni", icon: Settings },
@@ -60,7 +60,7 @@ export function AppShell({
             <Link
               key={item.to}
               to={item.to}
-              activeOptions={{ exact: item.to === "/" }}
+              activeOptions={{ exact: item.to === "/gestione" }}
               activeProps={{ className: "text-primary" }}
               inactiveProps={{ className: "text-muted-foreground" }}
               className="flex flex-1 flex-col items-center gap-1 py-2.5 text-[11px]"

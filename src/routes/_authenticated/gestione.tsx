@@ -39,7 +39,7 @@ import {
 
 type Search = { data?: string };
 
-export const Route = createFileRoute("/_authenticated/")({
+export const Route = createFileRoute("/_authenticated/gestione")({
   validateSearch: (search: Record<string, unknown>): Search =>
     typeof search['data'] === "string" ? { data: search['data'] } : {},
   head: () => ({
@@ -144,12 +144,12 @@ function OggiPage() {
               type="date"
               value={date}
               onChange={(e) =>
-                void navigate({ to: "/", search: { data: e.target.value } })
+                void navigate({ to: "/gestione", search: { data: e.target.value } })
               }
             />
             <Button
               variant="outline"
-              onClick={() => void navigate({ to: "/", search: {} })}
+              onClick={() => void navigate({ to: "/gestione", search: {} })}
             >
               Oggi
             </Button>

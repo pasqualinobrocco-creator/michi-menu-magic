@@ -36,7 +36,7 @@ function AuthPage() {
 
   useEffect(() => {
     void supabase.auth.getUser().then(({ data }) => {
-      if (data.user) void navigate({ to: "/", replace: true });
+      if (data.user) void navigate({ to: "/gestione", replace: true });
     });
   }, [navigate]);
 
@@ -54,7 +54,7 @@ function AuthPage() {
       return;
     }
     if (!data.session) return;
-    void navigate({ to: "/", replace: true });
+    void navigate({ to: "/gestione", replace: true });
   };
 
   return (
