@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { CalendarDays, Archive, Coffee, Settings, LogOut } from "lucide-react";
+import { CalendarDays, CalendarRange, Archive, Coffee, Settings, LogOut } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { MichiLogo } from "@/components/MichiLogo";
@@ -9,6 +9,7 @@ import { useLogos } from "@/lib/logos";
 
 const NAV = [
   { to: "/gestione", label: "Oggi", icon: CalendarDays },
+  { to: "/settimana", label: "Settimana", icon: CalendarRange },
   { to: "/fissi", label: "Fissi", icon: Coffee },
   { to: "/archivio", label: "Archivio", icon: Archive },
   { to: "/impostazioni", label: "Impostazioni", icon: Settings },
