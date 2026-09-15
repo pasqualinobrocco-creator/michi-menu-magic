@@ -17,4 +17,4 @@
 
 - [x] Creare e verificare la settimana gestionale con sette giorni, grafiche e copia testo
 
-- [ ] Aggiungere e verificare Prezzi con modifica dei valori originali dei menu del giorno e fissi
+- [x] Aggiungere e verificare Prezzi con modifica dei valori originali dei menu del giorno e fissi
