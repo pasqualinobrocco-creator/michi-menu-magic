@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as MenuRouteImport } from './routes/menu'
+import { Route as OrariRouteImport } from './routes/orari'
 import { Route as AuthenticatedArchivioRouteImport } from './routes/_authenticated/archivio'
 import { Route as AuthenticatedFissiRouteImport } from './routes/_authenticated/fissi'
 import { Route as AuthenticatedGestioneRouteImport } from './routes/_authenticated/gestione'
@@ -35,6 +36,11 @@ const AuthRoute = AuthRouteImport.update({
 const MenuRoute = MenuRouteImport.update({
   id: '/menu',
   path: '/menu',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrariRoute = OrariRouteImport.update({
+  id: '/orari',
+  path: '/orari',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedArchivioRoute = AuthenticatedArchivioRouteImport.update({
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/menu': typeof MenuRoute
+  '/orari': typeof OrariRoute
   '/archivio': typeof AuthenticatedArchivioRoute
   '/fissi': typeof AuthenticatedFissiRoute
   '/gestione': typeof AuthenticatedGestioneRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/menu': typeof MenuRoute
+  '/orari': typeof OrariRoute
   '/archivio': typeof AuthenticatedArchivioRoute
   '/fissi': typeof AuthenticatedFissiRoute
   '/gestione': typeof AuthenticatedGestioneRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/menu': typeof MenuRoute
+  '/orari': typeof OrariRoute
   '/_authenticated/archivio': typeof AuthenticatedArchivioRoute
   '/_authenticated/fissi': typeof AuthenticatedFissiRoute
   '/_authenticated/gestione': typeof AuthenticatedGestioneRoute
@@ -94,6 +103,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/menu'
+    | '/orari'
     | '/archivio'
     | '/fissi'
     | '/gestione'
@@ -103,6 +113,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/menu'
+    | '/orari'
     | '/archivio'
     | '/fissi'
     | '/gestione'
@@ -113,6 +124,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/menu'
+    | '/orari'
     | '/_authenticated/archivio'
     | '/_authenticated/fissi'
     | '/_authenticated/gestione'
@@ -124,6 +136,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   MenuRoute: typeof MenuRoute
+  OrariRoute: typeof OrariRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -154,6 +167,13 @@ declare module '@tanstack/react-router' {
       path: '/menu'
       fullPath: '/menu'
       preLoaderRoute: typeof MenuRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/orari': {
+      id: '/orari'
+      path: '/orari'
+      fullPath: '/orari'
+      preLoaderRoute: typeof OrariRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/archivio': {
@@ -209,6 +229,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   MenuRoute: MenuRoute,
+  OrariRoute: OrariRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -12,3 +12,5 @@
 - [x] Verificare il logo ufficiale PNG senza accesso su /menu
 
 - [x] Creare homepage pubblica con informazioni Google e accesso separato alla gestione
+
+- [x] Aggiungere e verificare /orari con fasce e menu a scelta manuale condivisi con /menu
