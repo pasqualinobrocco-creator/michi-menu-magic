@@ -10,3 +10,5 @@
 
 - [x] Disabilitare le registrazioni pubbliche alla gestione
 - [x] Verificare il logo ufficiale PNG senza accesso su /menu
+
+- [ ] Creare homepage pubblica con informazioni Google e accesso separato alla gestione

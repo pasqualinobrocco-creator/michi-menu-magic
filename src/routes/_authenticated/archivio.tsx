@@ -45,7 +45,7 @@ function ArchivioPage() {
               <button
                 type="button"
                 onClick={() =>
-                  void navigate({ to: "/", search: { data: m.menu_date } })
+                  void navigate({ to: "/gestione", search: { data: m.menu_date } })
                 }
                 className="flex w-full items-center justify-between rounded-lg border border-border bg-card px-4 py-3 text-left transition-colors hover:bg-secondary"
               >
