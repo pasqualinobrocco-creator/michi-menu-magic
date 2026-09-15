@@ -9,14 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as MenuRouteImport } from './routes/menu'
-import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedArchivioRouteImport } from './routes/_authenticated/archivio'
 import { Route as AuthenticatedFissiRouteImport } from './routes/_authenticated/fissi'
+import { Route as AuthenticatedGestioneRouteImport } from './routes/_authenticated/gestione'
 import { Route as AuthenticatedImpostazioniRouteImport } from './routes/_authenticated/impostazioni'
 
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -31,11 +37,6 @@ const MenuRoute = MenuRouteImport.update({
   path: '/menu',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedArchivioRoute = AuthenticatedArchivioRouteImport.update({
   id: '/archivio',
   path: '/archivio',
@@ -46,6 +47,11 @@ const AuthenticatedFissiRoute = AuthenticatedFissiRouteImport.update({
   path: '/fissi',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedGestioneRoute = AuthenticatedGestioneRouteImport.update({
+  id: '/gestione',
+  path: '/gestione',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedImpostazioniRoute =
   AuthenticatedImpostazioniRouteImport.update({
     id: '/impostazioni',
@@ -54,48 +60,67 @@ const AuthenticatedImpostazioniRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof AuthenticatedIndexRoute
+  '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/menu': typeof MenuRoute
   '/archivio': typeof AuthenticatedArchivioRoute
   '/fissi': typeof AuthenticatedFissiRoute
+  '/gestione': typeof AuthenticatedGestioneRoute
   '/impostazioni': typeof AuthenticatedImpostazioniRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/menu': typeof MenuRoute
   '/archivio': typeof AuthenticatedArchivioRoute
   '/fissi': typeof AuthenticatedFissiRoute
+  '/gestione': typeof AuthenticatedGestioneRoute
   '/impostazioni': typeof AuthenticatedImpostazioniRoute
-  '/': typeof AuthenticatedIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/menu': typeof MenuRoute
   '/_authenticated/archivio': typeof AuthenticatedArchivioRoute
   '/_authenticated/fissi': typeof AuthenticatedFissiRoute
+  '/_authenticated/gestione': typeof AuthenticatedGestioneRoute
   '/_authenticated/impostazioni': typeof AuthenticatedImpostazioniRoute
-  '/_authenticated/': typeof AuthenticatedIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/menu' | '/archivio' | '/fissi' | '/impostazioni'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/menu'
+    | '/archivio'
+    | '/fissi'
+    | '/gestione'
+    | '/impostazioni'
   fileRoutesByTo: FileRoutesByTo
-  to: '/auth' | '/menu' | '/archivio' | '/fissi' | '/impostazioni' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/menu'
+    | '/archivio'
+    | '/fissi'
+    | '/gestione'
+    | '/impostazioni'
   id:
     | '__root__'
+    | '/'
     | '/_authenticated'
     | '/auth'
     | '/menu'
     | '/_authenticated/archivio'
     | '/_authenticated/fissi'
+    | '/_authenticated/gestione'
     | '/_authenticated/impostazioni'
-    | '/_authenticated/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   MenuRoute: typeof MenuRoute
@@ -103,6 +128,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -124,13 +156,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MenuRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/': {
-      id: '/_authenticated/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/archivio': {
       id: '/_authenticated/archivio'
       path: '/archivio'
@@ -143,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/fissi'
       fullPath: '/fissi'
       preLoaderRoute: typeof AuthenticatedFissiRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/gestione': {
+      id: '/_authenticated/gestione'
+      path: '/gestione'
+      fullPath: '/gestione'
+      preLoaderRoute: typeof AuthenticatedGestioneRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/impostazioni': {
@@ -158,21 +190,22 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedArchivioRoute: typeof AuthenticatedArchivioRoute
   AuthenticatedFissiRoute: typeof AuthenticatedFissiRoute
+  AuthenticatedGestioneRoute: typeof AuthenticatedGestioneRoute
   AuthenticatedImpostazioniRoute: typeof AuthenticatedImpostazioniRoute
-  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedArchivioRoute: AuthenticatedArchivioRoute,
   AuthenticatedFissiRoute: AuthenticatedFissiRoute,
+  AuthenticatedGestioneRoute: AuthenticatedGestioneRoute,
   AuthenticatedImpostazioniRoute: AuthenticatedImpostazioniRoute,
-  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   MenuRoute: MenuRoute,
