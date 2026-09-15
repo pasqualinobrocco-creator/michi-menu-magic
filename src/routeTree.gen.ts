@@ -18,6 +18,7 @@ import { Route as AuthenticatedArchivioRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedFissiRouteImport } from './routes/_authenticated/fissi'
 import { Route as AuthenticatedGestioneRouteImport } from './routes/_authenticated/gestione'
 import { Route as AuthenticatedImpostazioniRouteImport } from './routes/_authenticated/impostazioni'
+import { Route as AuthenticatedSettimanaRouteImport } from './routes/_authenticated/settimana'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -64,6 +65,11 @@ const AuthenticatedImpostazioniRoute =
     path: '/impostazioni',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSettimanaRoute = AuthenticatedSettimanaRouteImport.update({
+  id: '/settimana',
+  path: '/settimana',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/fissi': typeof AuthenticatedFissiRoute
   '/gestione': typeof AuthenticatedGestioneRoute
   '/impostazioni': typeof AuthenticatedImpostazioniRoute
+  '/settimana': typeof AuthenticatedSettimanaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/fissi': typeof AuthenticatedFissiRoute
   '/gestione': typeof AuthenticatedGestioneRoute
   '/impostazioni': typeof AuthenticatedImpostazioniRoute
+  '/settimana': typeof AuthenticatedSettimanaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/_authenticated/fissi': typeof AuthenticatedFissiRoute
   '/_authenticated/gestione': typeof AuthenticatedGestioneRoute
   '/_authenticated/impostazioni': typeof AuthenticatedImpostazioniRoute
+  '/_authenticated/settimana': typeof AuthenticatedSettimanaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/fissi'
     | '/gestione'
     | '/impostazioni'
+    | '/settimana'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/fissi'
     | '/gestione'
     | '/impostazioni'
+    | '/settimana'
   id:
     | '__root__'
     | '/'
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/_authenticated/fissi'
     | '/_authenticated/gestione'
     | '/_authenticated/impostazioni'
+    | '/_authenticated/settimana'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -204,6 +216,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedImpostazioniRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/settimana': {
+      id: '/_authenticated/settimana'
+      path: '/settimana'
+      fullPath: '/settimana'
+      preLoaderRoute: typeof AuthenticatedSettimanaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -212,6 +231,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFissiRoute: typeof AuthenticatedFissiRoute
   AuthenticatedGestioneRoute: typeof AuthenticatedGestioneRoute
   AuthenticatedImpostazioniRoute: typeof AuthenticatedImpostazioniRoute
+  AuthenticatedSettimanaRoute: typeof AuthenticatedSettimanaRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -219,6 +239,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFissiRoute: AuthenticatedFissiRoute,
   AuthenticatedGestioneRoute: AuthenticatedGestioneRoute,
   AuthenticatedImpostazioniRoute: AuthenticatedImpostazioniRoute,
+  AuthenticatedSettimanaRoute: AuthenticatedSettimanaRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
