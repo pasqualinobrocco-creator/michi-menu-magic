@@ -6,6 +6,7 @@ const whatsappUrl = `https://wa.me/393298888968?text=${whatsappMessage}`;
 import { MichiLogo } from '@/components/MichiLogo';
 import { Button } from '@/components/ui/button';
 import { useLogos } from '@/lib/logos';
+import { useTrackVisit } from '@/lib/data';
 
 const maps = 'https://www.google.com/maps/search/?api=1&query=MICH%C3%8C+Via+Marco+Polo+102+Pescara';
 export const Route = createFileRoute('/')({
@@ -21,6 +22,7 @@ export const Route = createFileRoute('/')({
 });
 
 function HomePage() {
+  useTrackVisit('/');
   const { data: logos } = useLogos();
   return <div className="min-h-screen bg-background text-foreground">
     <header className="bg-brand text-primary-foreground">

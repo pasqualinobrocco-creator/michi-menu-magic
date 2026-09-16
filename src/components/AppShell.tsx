@@ -15,7 +15,7 @@ const NAV = [
   { to: "/orari-gestione", label: "Orari", icon: Clock },
   { to: "/archivio", label: "Archivio", icon: Archive },
   { to: "/statistiche", label: "Visite", icon: ChartColumn },
-  { to: "/impostazioni", label: "Altro", icon: Settings },
+  { to: "/impostazioni", label: "Impostazioni", icon: Settings },
 ] as const;
 
 export function AppShell({
