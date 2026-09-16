@@ -52,10 +52,16 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
         </nav>
         <h1 className="mt-6 text-4xl">{showHours ? "Orari & menu" : "Il nostro menu"}</h1>
         {showHours && <section aria-label="Orari di apertura e chiusura" className="mt-8 grid grid-cols-3 gap-2 border-y border-primary-foreground/20 py-6">
-          {[["Colazione", "07:30", "10:00"], ["Pranzo", "12:00", "14:00"], ["Aperitivo", "17:00", "19:00"]].map(([label, open, close]) => <div key={label}>
-            <h2 className="text-xl text-gold">{label}</h2>
-            <p className="mt-2 font-sans text-sm">{open} – {close}</p>
-          </div>)}
+          {hours.isPending ? (
+            <p className="col-span-3 text-sm opacity-80">Caricamento orari…</p>
+          ) : activeHours.length === 0 ? (
+            <p className="col-span-3 text-sm opacity-80">Orari non disponibili.</p>
+          ) : activeHours.map((h) => (
+            <div key={h.id}>
+              <h2 className="text-xl text-gold">{h.label}</h2>
+              <p className="mt-2 font-sans text-sm">{h.open_time} – {h.close_time}</p>
+            </div>
+          ))}
         </section>}
         <Tabs defaultValue={showHours ? "colazione" : "giorno"} className="mt-8">
           <TabsList className="mx-auto bg-primary-foreground/10">
