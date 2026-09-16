@@ -33,8 +33,7 @@ function HomePage() {
       <section className="bg-brand px-6 pb-16 pt-8 text-center text-primary-foreground md:pb-20 md:pt-12">
         <div className="mx-auto flex max-w-3xl flex-col items-center">
           <MichiLogo variant="light" width={260} src={logos?.light ?? null} />
-          <h1 className="mt-8 font-serif text-4xl md:text-5xl">MICHÍ — Caffè & Cucina</h1>
-          <p className="mt-5 max-w-lg font-serif text-2xl leading-relaxed">Colazioni, brunch e piatti genuini.<br />Ogni giorno, a Pescara.</p>
+          <p className="mt-8 max-w-lg font-serif text-2xl leading-relaxed">Colazioni, brunch e piatti genuini.<br />Ogni giorno, a Pescara.</p>
           <Button asChild size="lg" className="mt-8 bg-gold text-ink hover:bg-gold/90"><Link to="/menu">Scopri il menu <ArrowRight className="size-4" /></Link></Button>
           <a href={maps} target="_blank" rel="noreferrer" className="mt-8 flex items-center gap-2 text-sm underline-offset-4 hover:underline"><MapPin className="size-4" />Via Marco Polo 102, Pescara</a>
         </div>
