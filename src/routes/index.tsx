@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { ArrowUpRight, MapPin, Instagram, MessageCircle } from 'lucide-react';
+import { ArrowUpRight, MapPin, Instagram, MessageCircle, Star, Phone } from 'lucide-react';
 
 const whatsappMessage = encodeURIComponent('Ciao, vorrei ordinare da MICHÍ.');
 const whatsappUrl = `https://wa.me/393298888968?text=${whatsappMessage}`;
@@ -51,10 +51,22 @@ function HomePage() {
           <div><span className="font-serif text-xl text-primary">03</span><h3 className="mt-2 text-3xl">Pranzo</h3><p className="mt-3 text-muted-foreground">Piatti genuini e un menu del giorno da scoprire ogni volta.</p></div>
         </div>
       </section>
+      <section className="bg-brand px-6 py-14 text-center text-primary-foreground">
+        <p className="text-sm uppercase tracking-[0.2em] text-gold">Dicono di noi</p>
+        <div className="mt-4 flex items-center justify-center gap-2 text-gold" aria-hidden="true">
+          {[0, 1, 2, 3, 4].map((i) => <Star key={i} className="size-6 fill-gold" />)}
+        </div>
+        <p className="mt-4 font-serif text-5xl">5,0</p>
+        <p className="mt-2 text-base">17 recensioni su Google · €10–20 a persona</p>
+        <p className="mx-auto mt-5 max-w-xl font-serif text-xl leading-relaxed">«Un posto accogliente, apprezzato per il menu del giorno, la qualità dei piatti, il personale gentile e il servizio veloce.»</p>
+        <p className="mt-6 text-sm">Happy hour · Opzioni vegane · Menu bambini</p>
+        <a href="https://share.google/A4zN539mZgWnu3x7c" target="_blank" rel="noreferrer" className="mt-6 inline-block text-sm underline underline-offset-4">Leggi le recensioni su Google</a>
+      </section>
       <section className="border-y border-border bg-card px-6 py-14 text-center">
         <MapPin className="mx-auto size-6 text-primary" />
         <h2 className="mt-4 font-serif text-4xl">Ci vediamo da Michí.</h2>
         <address className="mt-5 text-lg not-italic">Via Marco Polo, 102<br />65126 Pescara PE</address>
+        <a href="tel:+393298888968" className="mt-3 inline-flex items-center gap-2 text-sm underline-offset-4 hover:underline"><Phone className="size-4" />+39 329 888 8968</a>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <Button asChild><a href={maps} target="_blank" rel="noreferrer">Come arrivare <ArrowUpRight className="size-4" /></a></Button>
           <Button asChild variant="outline"><a href="https://www.instagram.com/michi_caffe_cucina/" target="_blank" rel="noreferrer"><Instagram className="size-4" />Instagram</a></Button>
