@@ -1,0 +1,26 @@
+name: Deploy su Aruba
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npm run build
+      - name: Prepara la SPA
+        run: cp .output/public/_shell.html .output/public/index.html
+      - name: Carica sul server
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H 212.237.3.120 >> ~/.ssh/known_hosts
+          rsync -az --delete .output/public/ root@212.237.3.120:/var/www/michi/
+          ssh root@212.237.3.120 'chown -R www-data:www-data /var/www/michi'
