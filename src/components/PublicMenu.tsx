@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { MichiLogo } from "@/components/MichiLogo";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { fetchFixedMenus, fetchMenuByDate } from "@/lib/data";
+import { fetchFixedMenus, fetchMenuByDate, fetchOpeningHours } from "@/lib/data";
 import { useLogos } from "@/lib/logos";
 import {
   SECTIONS,
