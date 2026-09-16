@@ -12,6 +12,7 @@ const NAV = [
   { to: "/settimana", label: "Settimana", icon: CalendarRange },
   { to: "/fissi", label: "Fissi", icon: Coffee },
   { to: "/prezzi", label: "Prezzi", icon: Banknote },
+  { to: "/orari-gestione", label: "Orari", icon: Clock },
   { to: "/archivio", label: "Archivio", icon: Archive },
   { to: "/impostazioni", label: "Impostazioni", icon: Settings },
 ] as const;
