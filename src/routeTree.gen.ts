@@ -18,6 +18,7 @@ import { Route as AuthenticatedArchivioRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedFissiRouteImport } from './routes/_authenticated/fissi'
 import { Route as AuthenticatedGestioneRouteImport } from './routes/_authenticated/gestione'
 import { Route as AuthenticatedImpostazioniRouteImport } from './routes/_authenticated/impostazioni'
+import { Route as AuthenticatedOrariGestioneRouteImport } from './routes/_authenticated.orari-gestione'
 import { Route as AuthenticatedPrezziRouteImport } from './routes/_authenticated/prezzi'
 import { Route as AuthenticatedSettimanaRouteImport } from './routes/_authenticated/settimana'
 
@@ -66,6 +67,12 @@ const AuthenticatedImpostazioniRoute =
     path: '/impostazioni',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedOrariGestioneRoute =
+  AuthenticatedOrariGestioneRouteImport.update({
+    id: '/orari-gestione',
+    path: '/orari-gestione',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPrezziRoute = AuthenticatedPrezziRouteImport.update({
   id: '/prezzi',
   path: '/prezzi',
@@ -86,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/fissi': typeof AuthenticatedFissiRoute
   '/gestione': typeof AuthenticatedGestioneRoute
   '/impostazioni': typeof AuthenticatedImpostazioniRoute
+  '/orari-gestione': typeof AuthenticatedOrariGestioneRoute
   '/prezzi': typeof AuthenticatedPrezziRoute
   '/settimana': typeof AuthenticatedSettimanaRoute
 }
@@ -98,6 +106,7 @@ export interface FileRoutesByTo {
   '/fissi': typeof AuthenticatedFissiRoute
   '/gestione': typeof AuthenticatedGestioneRoute
   '/impostazioni': typeof AuthenticatedImpostazioniRoute
+  '/orari-gestione': typeof AuthenticatedOrariGestioneRoute
   '/prezzi': typeof AuthenticatedPrezziRoute
   '/settimana': typeof AuthenticatedSettimanaRoute
 }
@@ -112,6 +121,7 @@ export interface FileRoutesById {
   '/_authenticated/fissi': typeof AuthenticatedFissiRoute
   '/_authenticated/gestione': typeof AuthenticatedGestioneRoute
   '/_authenticated/impostazioni': typeof AuthenticatedImpostazioniRoute
+  '/_authenticated/orari-gestione': typeof AuthenticatedOrariGestioneRoute
   '/_authenticated/prezzi': typeof AuthenticatedPrezziRoute
   '/_authenticated/settimana': typeof AuthenticatedSettimanaRoute
 }
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/fissi'
     | '/gestione'
     | '/impostazioni'
+    | '/orari-gestione'
     | '/prezzi'
     | '/settimana'
   fileRoutesByTo: FileRoutesByTo
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/fissi'
     | '/gestione'
     | '/impostazioni'
+    | '/orari-gestione'
     | '/prezzi'
     | '/settimana'
   id:
@@ -151,6 +163,7 @@ export interface FileRouteTypes {
     | '/_authenticated/fissi'
     | '/_authenticated/gestione'
     | '/_authenticated/impostazioni'
+    | '/_authenticated/orari-gestione'
     | '/_authenticated/prezzi'
     | '/_authenticated/settimana'
   fileRoutesById: FileRoutesById
@@ -228,6 +241,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedImpostazioniRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/orari-gestione': {
+      id: '/_authenticated/orari-gestione'
+      path: '/orari-gestione'
+      fullPath: '/orari-gestione'
+      preLoaderRoute: typeof AuthenticatedOrariGestioneRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/prezzi': {
       id: '/_authenticated/prezzi'
       path: '/prezzi'
@@ -250,6 +270,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFissiRoute: typeof AuthenticatedFissiRoute
   AuthenticatedGestioneRoute: typeof AuthenticatedGestioneRoute
   AuthenticatedImpostazioniRoute: typeof AuthenticatedImpostazioniRoute
+  AuthenticatedOrariGestioneRoute: typeof AuthenticatedOrariGestioneRoute
   AuthenticatedPrezziRoute: typeof AuthenticatedPrezziRoute
   AuthenticatedSettimanaRoute: typeof AuthenticatedSettimanaRoute
 }
@@ -259,6 +280,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFissiRoute: AuthenticatedFissiRoute,
   AuthenticatedGestioneRoute: AuthenticatedGestioneRoute,
   AuthenticatedImpostazioniRoute: AuthenticatedImpostazioniRoute,
+  AuthenticatedOrariGestioneRoute: AuthenticatedOrariGestioneRoute,
   AuthenticatedPrezziRoute: AuthenticatedPrezziRoute,
   AuthenticatedSettimanaRoute: AuthenticatedSettimanaRoute,
 }
