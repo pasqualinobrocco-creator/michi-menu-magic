@@ -5,6 +5,7 @@ import type {
   FixedItem,
   FixedMenu,
   FixedSection,
+  OpeningHour,
 } from "@/lib/menu";
 
 export async function fetchMenuByDate(date: string) {
