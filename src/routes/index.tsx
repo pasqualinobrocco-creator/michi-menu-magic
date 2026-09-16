@@ -36,7 +36,7 @@ function HomePage() {
           <p className="mt-8 max-w-lg font-serif text-2xl leading-relaxed">Colazioni, brunch e piatti genuini.<br />Ogni giorno, a Pescara.</p>
           <div className="mt-8 flex flex-col items-center gap-3">
             <Button asChild size="lg" className="bg-gold px-8 text-ink hover:bg-gold/90"><Link to="/menu">MENU DEL GIORNO</Link></Button>
-            <Button asChild size="lg" variant="outline" className="border-primary-foreground px-10 text-primary-foreground hover:bg-primary-foreground/10"><Link to="/orari">ORARI</Link></Button>
+            <Button asChild size="lg" variant="outline" className="border-2 border-white bg-transparent px-10 text-white hover:bg-white/10 hover:text-white"><Link to="/orari">ORARI</Link></Button>
             <Button asChild size="lg" className="bg-[#25D366] px-6 text-white hover:bg-[#128C7E]"><a href={whatsappUrl} target="_blank" rel="noreferrer"><MessageCircle className="size-5" /> Ordina su WhatsApp</a></Button>
           </div>
           <a href={maps} target="_blank" rel="noreferrer" className="mt-8 flex items-center gap-2 text-sm underline-offset-4 hover:underline"><MapPin className="size-4" />Via Marco Polo 102, Pescara</a>
