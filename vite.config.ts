@@ -11,5 +11,9 @@ export default defineConfig({
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+    // Build statica per hosting su VPS Aruba (nginx): genera HTML prerenderizzato
+    // per ogni rotta piu' uno shell SPA, invece del worker Cloudflare.
+    spa: { enabled: true },
+    prerender: { enabled: true },
   },
 });
