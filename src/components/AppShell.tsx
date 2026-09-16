@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { Banknote, CalendarDays, CalendarRange, Archive, Coffee, Settings, LogOut } from "lucide-react";
+import { Banknote, CalendarDays, CalendarRange, Archive, Clock, Coffee, Settings, LogOut } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { MichiLogo } from "@/components/MichiLogo";
