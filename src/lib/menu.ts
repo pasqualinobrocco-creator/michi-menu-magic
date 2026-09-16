@@ -56,6 +56,15 @@ export type GraphicGroup = {
   lines: { name: string; description?: string | null; price: number | null }[];
 };
 
+export type OpeningHour = {
+  id: string;
+  label: string;
+  open_time: string;
+  close_time: string;
+  position: number;
+  enabled: boolean;
+};
+
 export function toISODate(d: Date): string {
   const tz = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
   return tz.toISOString().slice(0, 10);

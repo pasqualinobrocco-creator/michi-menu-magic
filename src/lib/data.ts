@@ -5,6 +5,7 @@ import type {
   FixedItem,
   FixedMenu,
   FixedSection,
+  OpeningHour,
 } from "@/lib/menu";
 
 export async function fetchMenuByDate(date: string) {
@@ -118,4 +119,32 @@ export async function fetchFixedMenus() {
     sections: (sections ?? []) as FixedSection[],
     items: (items ?? []) as FixedItem[],
   };
+}
+
+export async function fetchOpeningHours() {
+  const { data, error } = await supabase
+    .from("opening_hours")
+    .select("*")
+    .order("position");
+  if (error) throw error;
+  return (data ?? []) as OpeningHour[];
+}
+
+export async function upsertOpeningHour(
+  hour: {
+    id?: string;
+    label: string;
+    open_time: string;
+    close_time: string;
+    position: number;
+    enabled?: boolean;
+  },
+) {
+  const { error } = await supabase.from("opening_hours").upsert(hour);
+  if (error) throw error;
+}
+
+export async function deleteOpeningHour(id: string) {
+  const { error } = await supabase.from("opening_hours").delete().eq("id", id);
+  if (error) throw error;
 }

@@ -194,6 +194,39 @@ export type Database = {
         }
         Relationships: []
       }
+      opening_hours: {
+        Row: {
+          close_time: string
+          created_at: string
+          enabled: boolean
+          id: string
+          label: string
+          open_time: string
+          position: number
+          updated_at: string
+        }
+        Insert: {
+          close_time: string
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          label: string
+          open_time: string
+          position?: number
+          updated_at?: string
+        }
+        Update: {
+          close_time?: string
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          label?: string
+          open_time?: string
+          position?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       recipe_book: {
         Row: {
           created_at: string
