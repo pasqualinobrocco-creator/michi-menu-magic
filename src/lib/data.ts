@@ -130,7 +130,16 @@ export async function fetchOpeningHours() {
   return (data ?? []) as OpeningHour[];
 }
 
-export async function upsertOpeningHour(hour: Partial<OpeningHour>) {
+export async function upsertOpeningHour(
+  hour: {
+    id?: string;
+    label: string;
+    open_time: string;
+    close_time: string;
+    position: number;
+    enabled?: boolean;
+  },
+) {
   const { error } = await supabase.from("opening_hours").upsert(hour);
   if (error) throw error;
 }
