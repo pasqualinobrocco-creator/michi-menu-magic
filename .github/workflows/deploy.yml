@@ -12,7 +12,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm ci
+      - name: Installa le dipendenze
+        run: npm install --no-audit --no-fund
       - run: npm run build
       - name: Prepara la SPA
         run: cp .output/public/_shell.html .output/public/index.html
