@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { ArrowUpRight, MapPin, Instagram, ArrowRight } from 'lucide-react';
+import { ArrowUpRight, MapPin, Instagram } from 'lucide-react';
 import { MichiLogo } from '@/components/MichiLogo';
 import { Button } from '@/components/ui/button';
 import { useLogos } from '@/lib/logos';
@@ -21,11 +21,8 @@ function HomePage() {
   const { data: logos } = useLogos();
   return <div className="min-h-screen bg-background text-foreground">
     <header className="bg-brand text-primary-foreground">
-      <nav aria-label="Navigazione principale" className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-5">
-        <Link to="/" aria-label="MICHÍ — Homepage" className="shrink-0">
-          <MichiLogo variant="light" width={90} src={logos?.light ?? null} />
-        </Link>
-        <Button asChild variant="ghost"><Link to="/orari">Orari</Link></Button>
+      <nav aria-label="Navigazione principale" className="mx-auto flex max-w-6xl items-center justify-end gap-4 px-6 py-5">
+        <Button asChild variant="ghost" className="text-primary-foreground hover:bg-brand-deep hover:text-primary-foreground"><Link to="/orari">Orari</Link></Button>
         <Button asChild variant="ghost" className="text-primary-foreground hover:bg-brand-deep hover:text-primary-foreground"><Link to="/menu">Il menu <ArrowUpRight className="size-4" /></Link></Button>
       </nav>
     </header>
@@ -34,7 +31,10 @@ function HomePage() {
         <div className="mx-auto flex max-w-3xl flex-col items-center">
           <MichiLogo variant="light" width={260} src={logos?.light ?? null} />
           <p className="mt-8 max-w-lg font-serif text-2xl leading-relaxed">Colazioni, brunch e piatti genuini.<br />Ogni giorno, a Pescara.</p>
-          <Button asChild size="lg" className="mt-8 bg-gold text-ink hover:bg-gold/90"><Link to="/menu">Scopri il menu <ArrowRight className="size-4" /></Link></Button>
+          <div className="mt-8 flex flex-col items-center gap-3">
+            <Button asChild size="lg" className="bg-gold px-8 text-ink hover:bg-gold/90"><Link to="/menu">MENU DEL GIORNO</Link></Button>
+            <Button asChild size="lg" variant="outline" className="border-primary-foreground px-10 text-primary-foreground hover:bg-primary-foreground/10"><Link to="/orari">ORARI</Link></Button>
+          </div>
           <a href={maps} target="_blank" rel="noreferrer" className="mt-8 flex items-center gap-2 text-sm underline-offset-4 hover:underline"><MapPin className="size-4" />Via Marco Polo 102, Pescara</a>
         </div>
       </section>
