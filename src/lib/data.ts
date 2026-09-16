@@ -120,3 +120,22 @@ export async function fetchFixedMenus() {
     items: (items ?? []) as FixedItem[],
   };
 }
+
+export async function fetchOpeningHours() {
+  const { data, error } = await supabase
+    .from("opening_hours")
+    .select("*")
+    .order("position");
+  if (error) throw error;
+  return (data ?? []) as OpeningHour[];
+}
+
+export async function upsertOpeningHour(hour: Partial<OpeningHour>) {
+  const { error } = await supabase.from("opening_hours").upsert(hour);
+  if (error) throw error;
+}
+
+export async function deleteOpeningHour(id: string) {
+  const { error } = await supabase.from("opening_hours").delete().eq("id", id);
+  if (error) throw error;
+}
