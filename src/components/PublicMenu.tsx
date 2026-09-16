@@ -23,6 +23,10 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
     refetchInterval: 15000,
   });
   const fixed = useQuery({ queryKey: ["public-fixed"], queryFn: fetchFixedMenus, refetchInterval: 15000 });
+  const hours = useQuery({ queryKey: ["opening-hours"], queryFn: fetchOpeningHours, refetchInterval: 15000 });
+  const activeHours = (hours.data ?? [])
+    .filter((h) => h.enabled)
+    .sort((a, b) => a.position - b.position);
 
   const menu = daily.data?.menu?.status === "published" ? daily.data.menu : null;
   const items = daily.data?.items ?? [];
