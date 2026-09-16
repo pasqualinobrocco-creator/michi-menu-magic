@@ -18,3 +18,5 @@
 - [x] Creare e verificare la settimana gestionale con sette giorni, grafiche e copia testo
 
 - [x] Aggiungere e verificare Prezzi con modifica dei valori originali dei menu del giorno e fissi
+
+- [x] Aggiungere tabella opening_hours e schermata gestionale per modificare orari colazione, pranzo e aperitivo, condivisi con la pagina pubblica /orari
