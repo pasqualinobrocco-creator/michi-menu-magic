@@ -43,7 +43,7 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
 
   return (
     <div
-      className="min-h-screen bg-brand text-primary-foreground px-5 py-10"
+      className="relative min-h-screen bg-brand px-5 py-10 pb-24 text-primary-foreground"
     >
       <div className="mx-auto max-w-lg text-center font-serif">
         <div className="flex justify-center">
@@ -127,10 +127,10 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
             );
           })}
         </Tabs>
-        <div className="mt-10 flex justify-center font-sans">
-          <Button asChild size="lg" className="bg-[#25D366] px-6 text-white hover:bg-[#128C7E]"><a href={whatsappUrl} target="_blank" rel="noreferrer"><MessageCircle className="size-5" /> Ordina su WhatsApp</a></Button>
-        </div>
       </div>
+      <a href={whatsappUrl} target="_blank" rel="noreferrer" aria-label="Ordina su WhatsApp" className="fixed bottom-6 right-6 z-50 inline-flex size-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-105 hover:bg-[#128C7E] focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#25D366]">
+        <MessageCircle className="size-7" />
+      </a>
     </div>
   );
 }

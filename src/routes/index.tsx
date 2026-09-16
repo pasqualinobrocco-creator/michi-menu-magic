@@ -37,7 +37,6 @@ function HomePage() {
           <div className="mt-8 flex flex-col items-center gap-3">
             <Button asChild size="lg" className="bg-gold px-8 text-ink hover:bg-gold/90"><Link to="/menu">MENU DEL GIORNO</Link></Button>
             <Button asChild size="lg" variant="outline" className="border-2 border-white bg-transparent px-10 text-white hover:bg-white/10 hover:text-white"><Link to="/orari">ORARI</Link></Button>
-            <Button asChild size="lg" className="bg-[#25D366] px-6 text-white hover:bg-[#128C7E]"><a href={whatsappUrl} target="_blank" rel="noreferrer"><MessageCircle className="size-5" /> Ordina su WhatsApp</a></Button>
           </div>
           <a href={maps} target="_blank" rel="noreferrer" className="mt-8 flex items-center gap-2 text-sm underline-offset-4 hover:underline"><MapPin className="size-4" />Via Marco Polo 102, Pescara</a>
         </div>
@@ -70,11 +69,13 @@ function HomePage() {
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <Button asChild><a href={maps} target="_blank" rel="noreferrer">Come arrivare <ArrowUpRight className="size-4" /></a></Button>
           <Button asChild variant="outline"><a href="https://www.instagram.com/michi_caffe_cucina/" target="_blank" rel="noreferrer"><Instagram className="size-4" />Instagram</a></Button>
-          <Button asChild className="bg-[#25D366] text-white hover:bg-[#128C7E]"><a href={whatsappUrl} target="_blank" rel="noreferrer"><MessageCircle className="size-4" /> Ordina su WhatsApp</a></Button>
         </div>
         <a href="https://share.google/A4zN539mZgWnu3x7c" target="_blank" rel="noreferrer" className="mt-6 inline-block text-sm text-muted-foreground underline underline-offset-4">Orari e recensioni su Google</a>
       </section>
     </main>
     <footer className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-5 px-6 py-7 text-sm text-muted-foreground"><span>MICHÍ — Caffè & Cucina · Pescara</span><Link to="/auth" className="underline-offset-4 hover:underline">Area personale</Link></footer>
+    <a href={whatsappUrl} target="_blank" rel="noreferrer" aria-label="Ordina su WhatsApp" className="fixed bottom-6 right-6 z-50 inline-flex size-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-105 hover:bg-[#128C7E] focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#25D366]">
+      <MessageCircle className="size-7" />
+    </a>
   </div>;
 }
