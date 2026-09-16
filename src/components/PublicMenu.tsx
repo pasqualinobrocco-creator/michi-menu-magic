@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { MessageCircle } from "lucide-react";
 
 import { MichiLogo } from "@/components/MichiLogo";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,6 +15,9 @@ import {
 } from "@/lib/menu";
 
 import { Button } from "@/components/ui/button";
+const whatsappMessage = encodeURIComponent("Ciao, vorrei ordinare da MICHÍ.");
+const whatsappUrl = `https://wa.me/393298888968?text=${whatsappMessage}`;
+
 export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
   const today = todayISO();
   const { data: logos } = useLogos();
@@ -123,6 +127,9 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
             );
           })}
         </Tabs>
+        <div className="mt-10 flex justify-center font-sans">
+          <Button asChild size="lg" className="bg-[#25D366] px-6 text-white hover:bg-[#128C7E]"><a href={whatsappUrl} target="_blank" rel="noreferrer"><MessageCircle className="size-5" /> Ordina su WhatsApp</a></Button>
+        </div>
       </div>
     </div>
   );

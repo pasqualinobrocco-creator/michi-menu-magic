@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { ArrowUpRight, MapPin, Instagram } from 'lucide-react';
+import { ArrowUpRight, MapPin, Instagram, MessageCircle } from 'lucide-react';
+
+const whatsappMessage = encodeURIComponent('Ciao, vorrei ordinare da MICHÍ.');
+const whatsappUrl = `https://wa.me/393298888968?text=${whatsappMessage}`;
 import { MichiLogo } from '@/components/MichiLogo';
 import { Button } from '@/components/ui/button';
 import { useLogos } from '@/lib/logos';
@@ -34,6 +37,7 @@ function HomePage() {
           <div className="mt-8 flex flex-col items-center gap-3">
             <Button asChild size="lg" className="bg-gold px-8 text-ink hover:bg-gold/90"><Link to="/menu">MENU DEL GIORNO</Link></Button>
             <Button asChild size="lg" variant="outline" className="border-primary-foreground px-10 text-primary-foreground hover:bg-primary-foreground/10"><Link to="/orari">ORARI</Link></Button>
+            <Button asChild size="lg" className="bg-[#25D366] px-6 text-white hover:bg-[#128C7E]"><a href={whatsappUrl} target="_blank" rel="noreferrer"><MessageCircle className="size-5" /> Ordina su WhatsApp</a></Button>
           </div>
           <a href={maps} target="_blank" rel="noreferrer" className="mt-8 flex items-center gap-2 text-sm underline-offset-4 hover:underline"><MapPin className="size-4" />Via Marco Polo 102, Pescara</a>
         </div>
@@ -54,6 +58,7 @@ function HomePage() {
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <Button asChild><a href={maps} target="_blank" rel="noreferrer">Come arrivare <ArrowUpRight className="size-4" /></a></Button>
           <Button asChild variant="outline"><a href="https://www.instagram.com/michi_caffe_cucina/" target="_blank" rel="noreferrer"><Instagram className="size-4" />Instagram</a></Button>
+          <Button asChild className="bg-[#25D366] text-white hover:bg-[#128C7E]"><a href={whatsappUrl} target="_blank" rel="noreferrer"><MessageCircle className="size-4" /> Ordina su WhatsApp</a></Button>
         </div>
         <a href="https://share.google/A4zN539mZgWnu3x7c" target="_blank" rel="noreferrer" className="mt-6 inline-block text-sm text-muted-foreground underline underline-offset-4">Orari e recensioni su Google</a>
       </section>
