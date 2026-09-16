@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { ArrowUpRight, MapPin, Instagram, ArrowRight } from 'lucide-react';
+import { ArrowUpRight, MapPin, Instagram } from 'lucide-react';
 import { MichiLogo } from '@/components/MichiLogo';
 import { Button } from '@/components/ui/button';
 import { useLogos } from '@/lib/logos';
