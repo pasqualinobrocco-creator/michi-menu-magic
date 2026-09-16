@@ -227,6 +227,27 @@ export type Database = {
         }
         Relationships: []
       }
+      page_visits: {
+        Row: {
+          id: string
+          page: string
+          visit_date: string
+          visits: number
+        }
+        Insert: {
+          id?: string
+          page: string
+          visit_date?: string
+          visits?: number
+        }
+        Update: {
+          id?: string
+          page?: string
+          visit_date?: string
+          visits?: number
+        }
+        Relationships: []
+      }
       recipe_book: {
         Row: {
           created_at: string
@@ -259,7 +280,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      track_page_visit: { Args: { p_page: string }; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
