@@ -21,11 +21,8 @@ function HomePage() {
   const { data: logos } = useLogos();
   return <div className="min-h-screen bg-background text-foreground">
     <header className="bg-brand text-primary-foreground">
-      <nav aria-label="Navigazione principale" className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-5">
-        <Link to="/" aria-label="MICHÍ — Homepage" className="shrink-0">
-          <MichiLogo variant="light" width={90} src={logos?.light ?? null} />
-        </Link>
-        <Button asChild variant="ghost"><Link to="/orari">Orari</Link></Button>
+      <nav aria-label="Navigazione principale" className="mx-auto flex max-w-6xl items-center justify-end gap-4 px-6 py-5">
+        <Button asChild variant="ghost" className="text-primary-foreground hover:bg-brand-deep hover:text-primary-foreground"><Link to="/orari">Orari</Link></Button>
         <Button asChild variant="ghost" className="text-primary-foreground hover:bg-brand-deep hover:text-primary-foreground"><Link to="/menu">Il menu <ArrowUpRight className="size-4" /></Link></Button>
       </nav>
     </header>
