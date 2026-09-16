@@ -66,6 +66,7 @@ function HomePage() {
         <MapPin className="mx-auto size-6 text-primary" />
         <h2 className="mt-4 font-serif text-4xl">Ci vediamo da Michí.</h2>
         <address className="mt-5 text-lg not-italic">Via Marco Polo, 102<br />65126 Pescara PE</address>
+        <a href="tel:+393298888968" className="mt-3 inline-flex items-center gap-2 text-sm underline-offset-4 hover:underline"><Phone className="size-4" />+39 329 888 8968</a>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <Button asChild><a href={maps} target="_blank" rel="noreferrer">Come arrivare <ArrowUpRight className="size-4" /></a></Button>
           <Button asChild variant="outline"><a href="https://www.instagram.com/michi_caffe_cucina/" target="_blank" rel="noreferrer"><Instagram className="size-4" />Instagram</a></Button>
