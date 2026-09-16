@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { supabase } from "@/integrations/supabase/client";
 import type {
   DailyItem,
@@ -7,6 +9,33 @@ import type {
   FixedSection,
   OpeningHour,
 } from "@/lib/menu";
+
+export type PageVisit = {
+  id: string;
+  visit_date: string;
+  page: string;
+  visits: number;
+};
+
+/** Registra una visita alla pagina pubblica (una volta per caricamento). */
+export function useTrackVisit(page: string) {
+  useEffect(() => {
+    void supabase.rpc("track_page_visit", { p_page: page });
+  }, [page]);
+}
+
+export async function fetchPageVisits(days = 30): Promise<PageVisit[]> {
+  const since = new Date();
+  since.setDate(since.getDate() - (days - 1));
+  const sinceISO = since.toISOString().slice(0, 10);
+  const { data, error } = await supabase
+    .from("page_visits")
+    .select("*")
+    .gte("visit_date", sinceISO)
+    .order("visit_date", { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as PageVisit[];
+}
 
 export async function fetchMenuByDate(date: string) {
   const { data: menu, error } = await supabase
