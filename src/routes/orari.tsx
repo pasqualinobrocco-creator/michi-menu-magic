@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PublicMenu } from "@/components/PublicMenu";
+import { useTrackVisit } from "@/lib/data";
 
 export const Route = createFileRoute("/orari")({
   head: () => ({ meta: [
@@ -12,4 +13,7 @@ export const Route = createFileRoute("/orari")({
   ] }),
   component: HoursPage,
 });
-function HoursPage() { return <PublicMenu showHours />; }
+function HoursPage() {
+  useTrackVisit("/orari");
+  return <PublicMenu showHours />;
+}

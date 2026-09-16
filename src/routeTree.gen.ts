@@ -21,6 +21,7 @@ import { Route as AuthenticatedImpostazioniRouteImport } from './routes/_authent
 import { Route as AuthenticatedOrariGestioneRouteImport } from './routes/_authenticated.orari-gestione'
 import { Route as AuthenticatedPrezziRouteImport } from './routes/_authenticated/prezzi'
 import { Route as AuthenticatedSettimanaRouteImport } from './routes/_authenticated/settimana'
+import { Route as AuthenticatedStatisticheRouteImport } from './routes/_authenticated/statistiche'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -83,6 +84,12 @@ const AuthenticatedSettimanaRoute = AuthenticatedSettimanaRouteImport.update({
   path: '/settimana',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedStatisticheRoute =
+  AuthenticatedStatisticheRouteImport.update({
+    id: '/statistiche',
+    path: '/statistiche',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/orari-gestione': typeof AuthenticatedOrariGestioneRoute
   '/prezzi': typeof AuthenticatedPrezziRoute
   '/settimana': typeof AuthenticatedSettimanaRoute
+  '/statistiche': typeof AuthenticatedStatisticheRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -109,6 +117,7 @@ export interface FileRoutesByTo {
   '/orari-gestione': typeof AuthenticatedOrariGestioneRoute
   '/prezzi': typeof AuthenticatedPrezziRoute
   '/settimana': typeof AuthenticatedSettimanaRoute
+  '/statistiche': typeof AuthenticatedStatisticheRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -124,6 +133,7 @@ export interface FileRoutesById {
   '/_authenticated/orari-gestione': typeof AuthenticatedOrariGestioneRoute
   '/_authenticated/prezzi': typeof AuthenticatedPrezziRoute
   '/_authenticated/settimana': typeof AuthenticatedSettimanaRoute
+  '/_authenticated/statistiche': typeof AuthenticatedStatisticheRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -139,6 +149,7 @@ export interface FileRouteTypes {
     | '/orari-gestione'
     | '/prezzi'
     | '/settimana'
+    | '/statistiche'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -152,6 +163,7 @@ export interface FileRouteTypes {
     | '/orari-gestione'
     | '/prezzi'
     | '/settimana'
+    | '/statistiche'
   id:
     | '__root__'
     | '/'
@@ -166,6 +178,7 @@ export interface FileRouteTypes {
     | '/_authenticated/orari-gestione'
     | '/_authenticated/prezzi'
     | '/_authenticated/settimana'
+    | '/_authenticated/statistiche'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -262,6 +275,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettimanaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/statistiche': {
+      id: '/_authenticated/statistiche'
+      path: '/statistiche'
+      fullPath: '/statistiche'
+      preLoaderRoute: typeof AuthenticatedStatisticheRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -273,6 +293,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedOrariGestioneRoute: typeof AuthenticatedOrariGestioneRoute
   AuthenticatedPrezziRoute: typeof AuthenticatedPrezziRoute
   AuthenticatedSettimanaRoute: typeof AuthenticatedSettimanaRoute
+  AuthenticatedStatisticheRoute: typeof AuthenticatedStatisticheRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -283,6 +304,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedOrariGestioneRoute: AuthenticatedOrariGestioneRoute,
   AuthenticatedPrezziRoute: AuthenticatedPrezziRoute,
   AuthenticatedSettimanaRoute: AuthenticatedSettimanaRoute,
+  AuthenticatedStatisticheRoute: AuthenticatedStatisticheRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PublicMenu } from "@/components/PublicMenu";
+import { useTrackVisit } from "@/lib/data";
 
 export const Route = createFileRoute("/menu")({
   head: () => ({
@@ -20,6 +21,11 @@ export const Route = createFileRoute("/menu")({
       },
     ],
   }),
-  component: PublicMenu,
+  component: MenuPage,
 });
+
+function MenuPage() {
+  useTrackVisit("/menu");
+  return <PublicMenu />;
+}
 
