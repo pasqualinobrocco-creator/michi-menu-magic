@@ -20,7 +20,9 @@ export type PageVisit = {
 /** Registra una visita alla pagina pubblica (una volta per caricamento). */
 export function useTrackVisit(page: string) {
   useEffect(() => {
-    void supabase.rpc("track_page_visit", { p_page: page });
+    void (async () => {
+      await supabase.rpc("track_page_visit", { p_page: page });
+    })();
   }, [page]);
 }
 
