@@ -81,11 +81,20 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
             </div>
           ))}
         </section>}
-        <Tabs defaultValue={showHours ? "colazione" : "giorno"} className="mt-8">
+        <Tabs
+          value={
+            showHours && visibleFixed.some((m) => m.slug === "colazione")
+              ? "colazione"
+              : "giorno"
+          }
+          onValueChange={setTab}
+          className="mt-8"
+        >
           <TabsList className="mx-auto bg-primary-foreground/10">
             <TabsTrigger value="giorno">{showHours ? "Pranzo" : "Del giorno"}</TabsTrigger>
-            <TabsTrigger value="colazione">Colazione</TabsTrigger>
-            <TabsTrigger value="aperitivo">Aperitivo</TabsTrigger>
+            {visibleFixed.map((m) => (
+              <TabsTrigger key={m.id} value={m.slug}>{m.title}</TabsTrigger>
+            ))}
           </TabsList>
 
           <TabsContent value="giorno" className="mt-8">
@@ -114,7 +123,7 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
           </TabsContent>
 
           {fixed.isError && <p role="alert" className="mt-6">Menu fissi non disponibili. Riprova tra poco.</p>}
-          {(fixed.data?.menus ?? []).map((m) => {
+          {visibleFixed.map((m) => {
             const groups: GraphicGroup[] = (fixed.data?.sections ?? [])
               .filter((s) => s.menu_id === m.id)
               .map((s) => ({
