@@ -6,19 +6,25 @@ import { AppShell } from "@/components/AppShell";
 import { GraphicStudio } from "@/components/GraphicStudio";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { fetchMenuByDate } from "@/lib/data";
+import { fetchMenuByDate, fetchMenuSections } from "@/lib/data";
 import { useLogos } from "@/lib/logos";
-import { SECTIONS, todayISO, toISODate, formatDateLong, formatDateDots } from "@/lib/menu";
+import { itemBelongsToSection, todayISO, toISODate, formatDateLong, formatDateDots } from "@/lib/menu";
 
 function monday(date: string) { return toISODate(startOfWeek(parseISO(date), { weekStartsOn: 1 })); }
 function weekQuery(date: string) {
   const start = monday(date);
   return queryOptions({
     queryKey: ["weekly-menus", start],
-    queryFn: () => Promise.all(Array.from({ length: 7 }, async (_, i) => {
-      const day = toISODate(addDays(parseISO(start), i));
-      return { date: day, ...await fetchMenuByDate(day) };
-    })),
+    queryFn: async () => {
+      const [sections, days] = await Promise.all([
+        fetchMenuSections(),
+        Promise.all(Array.from({ length: 7 }, async (_, i) => {
+          const day = toISODate(addDays(parseISO(start), i));
+          return { date: day, ...await fetchMenuByDate(day) };
+        })),
+      ]);
+      return { sections, days };
+    },
     refetchInterval: 15000,
   });
 }
@@ -45,7 +51,8 @@ export const Route = createFileRoute("/_authenticated/settimana")({
 function WeekPage() {
   const { data: date } = Route.useSearch();
   const navigate = Route.useNavigate();
-  const { data: days } = useSuspenseQuery(weekQuery(date));
+  const { data: weekData } = useSuspenseQuery(weekQuery(date));
+  const { days, sections } = weekData;
   const { data: logos } = useLogos();
   const start = monday(date);
   const changeWeek = (offset: number) => void navigate({ search: { data: toISODate(addDays(parseISO(start), offset)) } });
@@ -63,7 +70,7 @@ function WeekPage() {
           <div><h2 className="font-serif text-2xl">{formatDateLong(day.date)}</h2><p className="text-sm text-muted-foreground">{day.menu ? day.menu.status === "published" ? "Pubblicato" : "Bozza" : "Menu non ancora creato"}</p></div>
           <Button asChild variant="outline"><Link to="/gestione" search={{ data: day.date }}><Pencil className="size-4" />{day.menu ? "Modifica" : "Crea menu"}</Link></Button>
         </div>
-        {day.menu && <GraphicStudio fileBase={`michi-menu-${day.date}`} dateLabel={formatDateDots(day.date)} logoSrc={logos?.light} bread={day.menu.bread} closing={day.menu.closing_message} groups={SECTIONS.map(s => ({ label: s.label, lines: day.items.filter(i => i.section === s.key).map(i => ({ name: i.name, price: i.price })) }))} />}
+        {day.menu && <GraphicStudio fileBase={`michi-menu-${day.date}`} dateLabel={formatDateDots(day.date)} logoSrc={logos?.light} bread={day.menu.bread} closing={day.menu.closing_message} groups={sections.map(s => ({ label: s.name, lines: day.items.filter(i => itemBelongsToSection(i, s)).map(i => ({ name: i.name, price: i.price })) }))} />}
       </section>)}
     </div>
   </AppShell>;

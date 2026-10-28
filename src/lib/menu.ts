@@ -1,11 +1,24 @@
-export type SectionKey = "antipasti" | "primi" | "secondi" | "dolci";
+export type MenuSection = {
+  id: string;
+  name: string;
+  position: number;
+};
 
-export const SECTIONS: { key: SectionKey; label: string }[] = [
-  { key: "antipasti", label: "Per iniziare" },
-  { key: "primi", label: "Primi" },
-  { key: "secondi", label: "Secondi" },
-  { key: "dolci", label: "Dolci" },
-];
+/** Nomi delle vecchie sezioni fisse, per i piatti salvati prima delle sezioni dinamiche. */
+const LEGACY_SECTION_NAMES: Record<string, string> = {
+  antipasti: "Per iniziare",
+  primi: "Primi",
+  secondi: "Secondi",
+  dolci: "Dolci",
+};
+
+export function itemBelongsToSection(
+  item: { section: string; section_id: string | null },
+  section: MenuSection,
+): boolean {
+  if (item.section_id) return item.section_id === section.id;
+  return LEGACY_SECTION_NAMES[item.section] === section.name;
+}
 
 export const CLOSING_PRESETS = ["Buon Pranzo ☀️", "Buona Cena 🌙"];
 
@@ -21,6 +34,7 @@ export type DailyItem = {
   id: string;
   menu_id: string;
   section: string;
+  section_id: string | null;
   name: string;
   price: number | null;
   position: number;

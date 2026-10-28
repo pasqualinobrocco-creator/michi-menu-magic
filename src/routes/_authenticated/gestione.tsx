@@ -23,18 +23,19 @@ import {
   duplicateMenu,
   ensureMenu,
   fetchMenuByDate,
+  fetchMenuSections,
   fetchRecipeBook,
   rememberRecipe,
 } from "@/lib/data";
 import { useLogos } from "@/lib/logos";
 import {
   CLOSING_PRESETS,
-  SECTIONS,
   formatDateDots,
   formatDateLong,
+  itemBelongsToSection,
   todayISO,
   type DailyItem,
-  type SectionKey,
+  type MenuSection,
 } from "@/lib/menu";
 
 type Search = { data?: string };
@@ -72,11 +73,20 @@ function OggiPage() {
     queryKey: ["menu", date],
     queryFn: () => fetchMenuByDate(date),
   });
+  const sectionsQuery = useQuery({
+    queryKey: ["daily-sections"],
+    queryFn: fetchMenuSections,
+  });
 
   const menu = menuQuery.data?.menu ?? null;
   const items = useMemo(() => menuQuery.data?.items ?? [], [menuQuery.data]);
+  const sections = useMemo(
+    () => sectionsQuery.data ?? [],
+    [sectionsQuery.data],
+  );
   const invalidate = () => {
     void qc.invalidateQueries({ queryKey: ["menu", date] });
+    void qc.invalidateQueries({ queryKey: ["daily-sections"] });
     void qc.invalidateQueries({ queryKey: ["archive"] });
     void qc.invalidateQueries({ queryKey: ["recipes"] });
   };
@@ -104,30 +114,33 @@ function OggiPage() {
 
   const addDish = useMutation({
     mutationFn: async (input: {
-      section: SectionKey;
+      section: MenuSection;
       name: string;
       price: number | null;
     }) => {
       const m = await ensureMenu(date);
-      const count = items.filter((i) => i.section === input.section).length;
+      const count = items.filter((i) =>
+        itemBelongsToSection(i, input.section),
+      ).length;
       const { error } = await supabase.from("daily_menu_items").insert({
         menu_id: m.id,
-        section: input.section,
+        section: input.section.name.toLowerCase(),
+        section_id: input.section.id,
         name: input.name.trim(),
         price: input.price,
         position: count,
       });
       if (error) throw error;
-      await rememberRecipe(input.name, input.price, input.section);
+      await rememberRecipe(input.name, input.price, input.section.name);
     },
     onSuccess: invalidate,
     onError: () => toast.error("Non è stato possibile aggiungere il piatto"),
   });
 
-  const groups = SECTIONS.map((s) => ({
-    label: s.label,
+  const groups = sections.map((s) => ({
+    label: s.name,
     lines: items
-      .filter((i) => i.section === s.key)
+      .filter((i) => itemBelongsToSection(i, s))
       .map((i) => ({ name: i.name, price: i.price })),
   }));
 
@@ -173,14 +186,15 @@ function OggiPage() {
           </div>
         </div>
 
-        {SECTIONS.map((section) => (
+        <SectionManager sections={sections} onChanged={invalidate} />
+
+        {sections.map((section) => (
           <SectionEditor
-            key={section.key}
-            sectionKey={section.key}
-            label={section.label}
-            items={items.filter((i) => i.section === section.key)}
+            key={section.id}
+            section={section}
+            items={items.filter((i) => itemBelongsToSection(i, section))}
             onAdd={(name, price) =>
-              addDish.mutate({ section: section.key, name, price })
+              addDish.mutate({ section, name, price })
             }
             onChanged={invalidate}
           />
@@ -243,15 +257,146 @@ function OggiPage() {
   );
 }
 
+function SectionManager({
+  sections,
+  onChanged,
+}: {
+  sections: MenuSection[];
+  onChanged: () => void;
+}) {
+  const [newName, setNewName] = useState("");
+
+  const reorder = async (ordered: MenuSection[]) => {
+    await Promise.all(
+      ordered.map((s, idx) =>
+        supabase
+          .from("daily_menu_sections")
+          .update({ position: idx })
+          .eq("id", s.id),
+      ),
+    );
+    onChanged();
+  };
+
+  const add = async () => {
+    const name = newName.trim();
+    if (!name) return;
+    const { error } = await supabase
+      .from("daily_menu_sections")
+      .insert({ name, position: sections.length });
+    if (error) {
+      toast.error("Sezione non salvata: il nome esiste già?");
+      return;
+    }
+    setNewName("");
+    onChanged();
+  };
+
+  return (
+    <section className="rounded-xl border border-border bg-card p-4">
+      <h2 className="mb-1 font-serif text-2xl">Sezioni del menu</h2>
+      <p className="mb-3 text-sm text-muted-foreground">
+        Crea, rinomina, elimina e riordina le sezioni del menu del giorno.
+      </p>
+      <SortableList items={sections} onReorder={(o) => void reorder(o)}>
+        {(s) => (
+          <SortableRow key={s.id} id={s.id}>
+            <SectionNameFields section={s} onChanged={onChanged} />
+          </SortableRow>
+        )}
+      </SortableList>
+      <div className="mt-3 flex gap-2">
+        <Input
+          placeholder="Nuova sezione (es. Contorni)"
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && void add()}
+        />
+        <Button size="icon" onClick={() => void add()} aria-label="Aggiungi sezione">
+          <Plus className="h-4 w-4" />
+        </Button>
+      </div>
+    </section>
+  );
+}
+
+function SectionNameFields({
+  section,
+  onChanged,
+}: {
+  section: MenuSection;
+  onChanged: () => void;
+}) {
+  const [name, setName] = useState(section.name);
+
+  useEffect(() => {
+    setName(section.name);
+  }, [section.name]);
+
+  const save = async () => {
+    const clean = name.trim();
+    if (!clean || clean === section.name) {
+      setName(section.name);
+      return;
+    }
+    const { error } = await supabase
+      .from("daily_menu_sections")
+      .update({ name: clean })
+      .eq("id", section.id);
+    if (error) {
+      toast.error("Nome non salvato: esiste già una sezione con questo nome?");
+      setName(section.name);
+      return;
+    }
+    onChanged();
+  };
+
+  const remove = async () => {
+    if (
+      !window.confirm(
+        `Eliminare la sezione "${section.name}"? Verranno eliminati anche tutti i suoi piatti, in tutti i menu.`,
+      )
+    )
+      return;
+    const { error } = await supabase
+      .from("daily_menu_sections")
+      .delete()
+      .eq("id", section.id);
+    if (error) {
+      toast.error("Eliminazione non riuscita");
+      return;
+    }
+    onChanged();
+  };
+
+  return (
+    <>
+      <Input
+        className="h-9 flex-1 border-0 bg-transparent px-1 shadow-none focus-visible:ring-0"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        onBlur={() => void save()}
+        aria-label={`Nome della sezione ${section.name}`}
+      />
+      <button
+        type="button"
+        onClick={() => void remove()}
+        aria-label={`Elimina la sezione ${section.name}`}
+        className="rounded p-1.5 text-muted-foreground hover:text-destructive"
+      >
+        <Trash2 className="h-4 w-4" />
+      </button>
+    </>
+  );
+}
+
 function SectionEditor({
-  sectionKey,
-  label,
+  section,
   items,
   onAdd,
   onChanged,
 }: {
-  sectionKey: SectionKey;
-  label: string;
+  section: MenuSection;
   items: DailyItem[];
   onAdd: (name: string, price: number | null) => void;
   onChanged: () => void;
@@ -281,15 +426,19 @@ function SectionEditor({
   return (
     <section className="rounded-xl border border-border bg-card p-4">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="font-serif text-2xl">{label}</h2>
-        <RecipeBookDialog section={sectionKey} onPick={onAdd} />
+        <h2 className="font-serif text-2xl">{section.name}</h2>
+        <RecipeBookDialog section={section.name} onPick={onAdd} />
       </div>
 
       {items.length ? (
         <SortableList items={items} onReorder={(o) => void reorder(o)}>
           {(item) => (
             <SortableRow key={item.id} id={item.id}>
-              <DishFields item={item} onChanged={onChanged} />
+              <DishFields
+                item={item}
+                sectionName={section.name}
+                onChanged={onChanged}
+              />
             </SortableRow>
           )}
         </SortableList>
@@ -322,9 +471,11 @@ function SectionEditor({
 
 function DishFields({
   item,
+  sectionName,
   onChanged,
 }: {
   item: DailyItem;
+  sectionName: string;
   onChanged: () => void;
 }) {
   const [name, setName] = useState(item.name);
@@ -342,7 +493,7 @@ function DishFields({
       .from("daily_menu_items")
       .update({ name: name.trim(), price: parsed })
       .eq("id", item.id);
-    await rememberRecipe(name, parsed, item.section);
+    await rememberRecipe(name, parsed, sectionName);
     onChanged();
   };
 
@@ -382,7 +533,7 @@ function RecipeBookDialog({
   section,
   onPick,
 }: {
-  section: SectionKey;
+  section: string;
   onPick: (name: string, price: number | null) => void;
 }) {
   const [open, setOpen] = useState(false);
