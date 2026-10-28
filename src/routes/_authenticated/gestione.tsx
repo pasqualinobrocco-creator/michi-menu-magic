@@ -257,6 +257,139 @@ function OggiPage() {
   );
 }
 
+function SectionManager({
+  sections,
+  onChanged,
+}: {
+  sections: MenuSection[];
+  onChanged: () => void;
+}) {
+  const [newName, setNewName] = useState("");
+
+  const reorder = async (ordered: MenuSection[]) => {
+    await Promise.all(
+      ordered.map((s, idx) =>
+        supabase
+          .from("daily_menu_sections")
+          .update({ position: idx })
+          .eq("id", s.id),
+      ),
+    );
+    onChanged();
+  };
+
+  const add = async () => {
+    const name = newName.trim();
+    if (!name) return;
+    const { error } = await supabase
+      .from("daily_menu_sections")
+      .insert({ name, position: sections.length });
+    if (error) {
+      toast.error("Sezione non salvata: il nome esiste già?");
+      return;
+    }
+    setNewName("");
+    onChanged();
+  };
+
+  return (
+    <section className="rounded-xl border border-border bg-card p-4">
+      <h2 className="mb-1 font-serif text-2xl">Sezioni del menu</h2>
+      <p className="mb-3 text-sm text-muted-foreground">
+        Crea, rinomina, elimina e riordina le sezioni del menu del giorno.
+      </p>
+      <SortableList items={sections} onReorder={(o) => void reorder(o)}>
+        {(s) => (
+          <SortableRow key={s.id} id={s.id}>
+            <SectionNameFields section={s} onChanged={onChanged} />
+          </SortableRow>
+        )}
+      </SortableList>
+      <div className="mt-3 flex gap-2">
+        <Input
+          placeholder="Nuova sezione (es. Contorni)"
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && void add()}
+        />
+        <Button size="icon" onClick={() => void add()} aria-label="Aggiungi sezione">
+          <Plus className="h-4 w-4" />
+        </Button>
+      </div>
+    </section>
+  );
+}
+
+function SectionNameFields({
+  section,
+  onChanged,
+}: {
+  section: MenuSection;
+  onChanged: () => void;
+}) {
+  const [name, setName] = useState(section.name);
+
+  useEffect(() => {
+    setName(section.name);
+  }, [section.name]);
+
+  const save = async () => {
+    const clean = name.trim();
+    if (!clean || clean === section.name) {
+      setName(section.name);
+      return;
+    }
+    const { error } = await supabase
+      .from("daily_menu_sections")
+      .update({ name: clean })
+      .eq("id", section.id);
+    if (error) {
+      toast.error("Nome non salvato: esiste già una sezione con questo nome?");
+      setName(section.name);
+      return;
+    }
+    onChanged();
+  };
+
+  const remove = async () => {
+    if (
+      !window.confirm(
+        `Eliminare la sezione "${section.name}"? Verranno eliminati anche tutti i suoi piatti, in tutti i menu.`,
+      )
+    )
+      return;
+    const { error } = await supabase
+      .from("daily_menu_sections")
+      .delete()
+      .eq("id", section.id);
+    if (error) {
+      toast.error("Eliminazione non riuscita");
+      return;
+    }
+    onChanged();
+  };
+
+  return (
+    <>
+      <Input
+        className="h-9 flex-1 border-0 bg-transparent px-1 shadow-none focus-visible:ring-0"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        onBlur={() => void save()}
+        aria-label={`Nome della sezione ${section.name}`}
+      />
+      <button
+        type="button"
+        onClick={() => void remove()}
+        aria-label={`Elimina la sezione ${section.name}`}
+        className="rounded p-1.5 text-muted-foreground hover:text-destructive"
+      >
+        <Trash2 className="h-4 w-4" />
+      </button>
+    </>
+  );
+}
+
 function SectionEditor({
   section,
   items,
