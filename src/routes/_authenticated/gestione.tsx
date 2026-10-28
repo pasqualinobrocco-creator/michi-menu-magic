@@ -114,30 +114,33 @@ function OggiPage() {
 
   const addDish = useMutation({
     mutationFn: async (input: {
-      section: SectionKey;
+      section: MenuSection;
       name: string;
       price: number | null;
     }) => {
       const m = await ensureMenu(date);
-      const count = items.filter((i) => i.section === input.section).length;
+      const count = items.filter((i) =>
+        itemBelongsToSection(i, input.section),
+      ).length;
       const { error } = await supabase.from("daily_menu_items").insert({
         menu_id: m.id,
-        section: input.section,
+        section: input.section.name.toLowerCase(),
+        section_id: input.section.id,
         name: input.name.trim(),
         price: input.price,
         position: count,
       });
       if (error) throw error;
-      await rememberRecipe(input.name, input.price, input.section);
+      await rememberRecipe(input.name, input.price, input.section.name);
     },
     onSuccess: invalidate,
     onError: () => toast.error("Non è stato possibile aggiungere il piatto"),
   });
 
-  const groups = SECTIONS.map((s) => ({
-    label: s.label,
+  const groups = sections.map((s) => ({
+    label: s.name,
     lines: items
-      .filter((i) => i.section === s.key)
+      .filter((i) => itemBelongsToSection(i, s))
       .map((i) => ({ name: i.name, price: i.price })),
   }));
 
