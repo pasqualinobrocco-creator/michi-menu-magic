@@ -162,29 +162,34 @@ function Groups({ groups }: { groups: GraphicGroup[] }) {
   if (!groups.length) {
     return <p className="mt-6 text-lg opacity-80">Menu in preparazione.</p>;
   }
+  let lastHadLines = false;
   return (
     <div className="mt-6 space-y-1 text-lg">
-      {groups.map((g, gi) => (
-        <div key={gi}>
-          {gi > 0 ? <p className="py-2 opacity-90">•</p> : null}
-          {g.label ? (
-            <p className="mb-1 text-xs tracking-[0.3em] opacity-80">
-              {g.label.toUpperCase()}
-            </p>
-          ) : null}
-          {g.lines.map((l, li) => (
-            <p key={li} className="text-balance">
-              • {l.name}
-              {l.description ? (
-                <span className="italic opacity-80"> {l.description}</span>
-              ) : null}
-              {l.price !== null && l.price !== undefined ? (
-                <span className="font-bold"> {formatPrice(l.price)}</span>
-              ) : null}
-            </p>
-          ))}
-        </div>
-      ))}
+      {groups.map((g, gi) => {
+        const separator = g.lines.length > 0 && lastHadLines;
+        lastHadLines = g.lines.length > 0;
+        return (
+          <div key={gi}>
+            {separator ? <p className="py-2 opacity-90">•</p> : null}
+            {g.label ? (
+              <p className="mb-1 text-xs tracking-[0.3em] opacity-80">
+                {g.label.toUpperCase()}
+              </p>
+            ) : null}
+            {g.lines.map((l, li) => (
+              <p key={li} className="text-balance">
+                • {l.name}
+                {l.description ? (
+                  <span className="italic opacity-80"> {l.description}</span>
+                ) : null}
+                {l.price !== null && l.price !== undefined ? (
+                  <span className="font-bold"> {formatPrice(l.price)}</span>
+                ) : null}
+              </p>
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
 }
