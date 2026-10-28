@@ -37,12 +37,14 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
 
   const menu = daily.data?.menu?.status === "published" ? daily.data.menu : null;
   const items = daily.data?.items ?? [];
-  const dayGroups: GraphicGroup[] = (sections.data ?? []).map((s) => ({
-    label: s.name,
-    lines: items
-      .filter((i) => itemBelongsToSection(i, s))
-      .map((i) => ({ name: i.name, price: i.price })),
-  }));
+  const dayGroups: GraphicGroup[] = (sections.data ?? [])
+    .map((s) => ({
+      label: s.name,
+      lines: items
+        .filter((i) => itemBelongsToSection(i, s))
+        .map((i) => ({ name: i.name, price: i.price })),
+    }))
+    .filter((g) => g.lines.length > 0);
 
   // Colazione e Aperitivo compaiono solo se hanno almeno una voce attiva.
   const fixedMenus = fixed.data?.menus ?? [];
