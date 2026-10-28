@@ -158,7 +158,7 @@ export function MenuCanvas({
                 </div>
               ) : null}
 
-              {groups.map((group, gi) => {
+              {groups.filter((g) => g.lines.length > 0).map((group, gi) => {
                 const separator = gi > 0;
                 return (
                 <div key={gi}>
