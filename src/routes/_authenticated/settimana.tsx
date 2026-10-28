@@ -6,19 +6,25 @@ import { AppShell } from "@/components/AppShell";
 import { GraphicStudio } from "@/components/GraphicStudio";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { fetchMenuByDate } from "@/lib/data";
+import { fetchMenuByDate, fetchMenuSections } from "@/lib/data";
 import { useLogos } from "@/lib/logos";
-import { SECTIONS, todayISO, toISODate, formatDateLong, formatDateDots } from "@/lib/menu";
+import { itemBelongsToSection, todayISO, toISODate, formatDateLong, formatDateDots } from "@/lib/menu";
 
 function monday(date: string) { return toISODate(startOfWeek(parseISO(date), { weekStartsOn: 1 })); }
 function weekQuery(date: string) {
   const start = monday(date);
   return queryOptions({
     queryKey: ["weekly-menus", start],
-    queryFn: () => Promise.all(Array.from({ length: 7 }, async (_, i) => {
-      const day = toISODate(addDays(parseISO(start), i));
-      return { date: day, ...await fetchMenuByDate(day) };
-    })),
+    queryFn: async () => {
+      const [sections, days] = await Promise.all([
+        fetchMenuSections(),
+        Promise.all(Array.from({ length: 7 }, async (_, i) => {
+          const day = toISODate(addDays(parseISO(start), i));
+          return { date: day, ...await fetchMenuByDate(day) };
+        })),
+      ]);
+      return { sections, days };
+    },
     refetchInterval: 15000,
   });
 }
