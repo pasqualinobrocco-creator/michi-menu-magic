@@ -51,7 +51,8 @@ export const Route = createFileRoute("/_authenticated/settimana")({
 function WeekPage() {
   const { data: date } = Route.useSearch();
   const navigate = Route.useNavigate();
-  const { data: days } = useSuspenseQuery(weekQuery(date));
+  const { data: weekData } = useSuspenseQuery(weekQuery(date));
+  const { days, sections } = weekData;
   const { data: logos } = useLogos();
   const start = monday(date);
   const changeWeek = (offset: number) => void navigate({ search: { data: toISODate(addDays(parseISO(start), offset)) } });
@@ -69,7 +70,7 @@ function WeekPage() {
           <div><h2 className="font-serif text-2xl">{formatDateLong(day.date)}</h2><p className="text-sm text-muted-foreground">{day.menu ? day.menu.status === "published" ? "Pubblicato" : "Bozza" : "Menu non ancora creato"}</p></div>
           <Button asChild variant="outline"><Link to="/gestione" search={{ data: day.date }}><Pencil className="size-4" />{day.menu ? "Modifica" : "Crea menu"}</Link></Button>
         </div>
-        {day.menu && <GraphicStudio fileBase={`michi-menu-${day.date}`} dateLabel={formatDateDots(day.date)} logoSrc={logos?.light} bread={day.menu.bread} closing={day.menu.closing_message} groups={SECTIONS.map(s => ({ label: s.label, lines: day.items.filter(i => i.section === s.key).map(i => ({ name: i.name, price: i.price })) }))} />}
+        {day.menu && <GraphicStudio fileBase={`michi-menu-${day.date}`} dateLabel={formatDateDots(day.date)} logoSrc={logos?.light} bread={day.menu.bread} closing={day.menu.closing_message} groups={sections.map(s => ({ label: s.name, lines: day.items.filter(i => itemBelongsToSection(i, s)).map(i => ({ name: i.name, price: i.price })) }))} />}
       </section>)}
     </div>
   </AppShell>;
