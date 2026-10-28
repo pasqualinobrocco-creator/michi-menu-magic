@@ -21,6 +21,7 @@ const whatsappUrl = `https://wa.me/393298888968?text=${whatsappMessage}`;
 
 export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
   const today = todayISO();
+  const [tab, setTab] = useState<string>("giorno");
   const { data: logos } = useLogos();
   const daily = useQuery({
     queryKey: ["public-menu", today],
