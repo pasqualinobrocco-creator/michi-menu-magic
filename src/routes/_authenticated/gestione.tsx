@@ -186,14 +186,15 @@ function OggiPage() {
           </div>
         </div>
 
-        {SECTIONS.map((section) => (
+        <SectionManager sections={sections} onChanged={invalidate} />
+
+        {sections.map((section) => (
           <SectionEditor
-            key={section.key}
-            sectionKey={section.key}
-            label={section.label}
-            items={items.filter((i) => i.section === section.key)}
+            key={section.id}
+            section={section}
+            items={items.filter((i) => itemBelongsToSection(i, section))}
             onAdd={(name, price) =>
-              addDish.mutate({ section: section.key, name, price })
+              addDish.mutate({ section, name, price })
             }
             onChanged={invalidate}
           />
@@ -257,14 +258,12 @@ function OggiPage() {
 }
 
 function SectionEditor({
-  sectionKey,
-  label,
+  section,
   items,
   onAdd,
   onChanged,
 }: {
-  sectionKey: SectionKey;
-  label: string;
+  section: MenuSection;
   items: DailyItem[];
   onAdd: (name: string, price: number | null) => void;
   onChanged: () => void;
@@ -294,8 +293,8 @@ function SectionEditor({
   return (
     <section className="rounded-xl border border-border bg-card p-4">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="font-serif text-2xl">{label}</h2>
-        <RecipeBookDialog section={sectionKey} onPick={onAdd} />
+        <h2 className="font-serif text-2xl">{section.name}</h2>
+        <RecipeBookDialog section={section.name} onPick={onAdd} />
       </div>
 
       {items.length ? (
