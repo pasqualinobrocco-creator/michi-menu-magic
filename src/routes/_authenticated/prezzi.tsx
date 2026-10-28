@@ -6,15 +6,15 @@ import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { fetchMenuByDate, fetchFixedMenus } from "@/lib/data";
-import { todayISO, SECTIONS } from "@/lib/menu";
+import { fetchMenuByDate, fetchFixedMenus, fetchMenuSections } from "@/lib/data";
+import { todayISO, itemBelongsToSection } from "@/lib/menu";
 import { supabase } from "@/integrations/supabase/client";
 
 const pricesQuery = (date: string) => queryOptions({
   queryKey: ["prices", date],
   queryFn: async () => {
-    const [daily, fixed] = await Promise.all([fetchMenuByDate(date), fetchFixedMenus()]);
-    return { daily, fixed };
+    const [daily, fixed, sections] = await Promise.all([fetchMenuByDate(date), fetchFixedMenus(), fetchMenuSections()]);
+    return { daily, fixed, sections };
   },
 });
 export const Route = createFileRoute("/_authenticated/prezzi")({
@@ -69,9 +69,9 @@ function PricesPage() {
     <section className="pb-8">
       <div className="mb-5 flex flex-wrap items-end justify-between gap-4"><h2 className="font-serif text-2xl">Menu del giorno</h2><label className="text-sm">Data<Input aria-label="Data menu" type="date" value={date} onChange={e => { if (e.target.value) void navigate({ search: { data: e.target.value } }); }} /></label></div>
       {!data.daily.items.length && <p className="text-sm text-muted-foreground">Nessun piatto per questa data.</p>}
-      {SECTIONS.map(s => {
-        const items = data.daily.items.filter(i => i.section === s.key);
-        return items.length ? <div key={s.key} className="mt-5"><h3 className="text-sm text-primary">{s.label}</h3>{items.map(i => <PriceRow key={`${i.id}-${i.price}`} {...i} table="daily_menu_items" />)}</div> : null;
+      {data.sections.map(s => {
+        const items = data.daily.items.filter(i => itemBelongsToSection(i, s));
+        return items.length ? <div key={s.id} className="mt-5"><h3 className="text-sm text-primary">{s.name}</h3>{items.map(i => <PriceRow key={`${i.id}-${i.price}`} {...i} table="daily_menu_items" />)}</div> : null;
       })}
     </section>
     {data.fixed.menus.map(menu => <section key={menu.id} className="border-t border-border py-8">

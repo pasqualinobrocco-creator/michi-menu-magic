@@ -4,12 +4,12 @@ import { MessageCircle } from "lucide-react";
 
 import { MichiLogo } from "@/components/MichiLogo";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { fetchFixedMenus, fetchMenuByDate, fetchOpeningHours } from "@/lib/data";
+import { fetchFixedMenus, fetchMenuByDate, fetchMenuSections, fetchOpeningHours } from "@/lib/data";
 import { useLogos } from "@/lib/logos";
 import {
-  SECTIONS,
   formatDateDots,
   formatPrice,
+  itemBelongsToSection,
   todayISO,
   type GraphicGroup,
 } from "@/lib/menu";
@@ -27,6 +27,7 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
     refetchInterval: 15000,
   });
   const fixed = useQuery({ queryKey: ["public-fixed"], queryFn: fetchFixedMenus, refetchInterval: 15000 });
+  const sections = useQuery({ queryKey: ["daily-sections"], queryFn: fetchMenuSections, refetchInterval: 15000 });
   const hours = useQuery({ queryKey: ["opening-hours"], queryFn: fetchOpeningHours, refetchInterval: 15000 });
   const activeHours = (hours.data ?? [])
     .filter((h) => h.enabled)
@@ -34,10 +35,10 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
 
   const menu = daily.data?.menu?.status === "published" ? daily.data.menu : null;
   const items = daily.data?.items ?? [];
-  const dayGroups: GraphicGroup[] = SECTIONS.map((s) => ({
-    label: s.label,
+  const dayGroups: GraphicGroup[] = (sections.data ?? []).map((s) => ({
+    label: s.name,
     lines: items
-      .filter((i) => i.section === s.key)
+      .filter((i) => itemBelongsToSection(i, s))
       .map((i) => ({ name: i.name, price: i.price })),
   })).filter((g) => g.lines.length > 0);
 
