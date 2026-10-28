@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { MessageCircle } from "lucide-react";
 
 import { MichiLogo } from "@/components/MichiLogo";
@@ -40,7 +41,19 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
     lines: items
       .filter((i) => itemBelongsToSection(i, s))
       .map((i) => ({ name: i.name, price: i.price })),
-  })).filter((g) => g.lines.length > 0);
+  }));
+
+  // Colazione e Aperitivo compaiono solo se hanno almeno una voce attiva.
+  const fixedMenus = fixed.data?.menus ?? [];
+  const visibleFixed = fixedMenus.filter((m) =>
+    (fixed.data?.items ?? []).some(
+      (i) =>
+        i.is_active &&
+        (fixed.data?.sections ?? []).some(
+          (s) => s.menu_id === m.id && s.id === i.section_id,
+        ),
+    ),
+  );
 
   return (
     <div
