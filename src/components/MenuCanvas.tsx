@@ -45,7 +45,7 @@ export function MenuCanvas({
   const node = nodeRef ?? localNode;
 
   const base = f.h * 0.032;
-  const visibleGroups = groups.filter((g) => g.lines.length > 0);
+
 
   // Shrink the type until everything fits inside the format, never cropping.
   useLayoutEffect(() => {
