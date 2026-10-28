@@ -1,7 +1,7 @@
 export type SectionKey = "antipasti" | "primi" | "secondi" | "dolci";
 
 export const SECTIONS: { key: SectionKey; label: string }[] = [
-  { key: "antipasti", label: "Antipasti" },
+  { key: "antipasti", label: "Per iniziare" },
   { key: "primi", label: "Primi" },
   { key: "secondi", label: "Secondi" },
   { key: "dolci", label: "Dolci" },

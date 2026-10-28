@@ -20,3 +20,5 @@
 - [x] Aggiungere e verificare Prezzi con modifica dei valori originali dei menu del giorno e fissi
 
 - [x] Aggiungere tabella opening_hours e schermata gestionale per modificare orari colazione, pranzo e aperitivo, condivisi con la pagina pubblica /orari
+
+- [x] Rinominare la sezione Antipasti in Per iniziare nella parte pubblica e gestionale
