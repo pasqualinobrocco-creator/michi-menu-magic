@@ -45,7 +45,8 @@ export function MenuCanvas({
   const node = nodeRef ?? localNode;
 
   const base = f.h * 0.032;
-  let lastHadLines = false;
+
+
 
 
 
@@ -158,8 +159,7 @@ export function MenuCanvas({
               ) : null}
 
               {groups.map((group, gi) => {
-                const separator = group.lines.length > 0 && lastHadLines;
-                lastHadLines = group.lines.length > 0;
+                const separator = gi > 0;
                 return (
                 <div key={gi}>
                   {separator ? (

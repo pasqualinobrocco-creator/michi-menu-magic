@@ -163,12 +163,10 @@ function Groups({ groups }: { groups: GraphicGroup[] }) {
   if (!groups.length) {
     return <p className="mt-6 text-lg opacity-80">Menu in preparazione.</p>;
   }
-  let lastHadLines = false;
   return (
     <div className="mt-6 space-y-1 text-lg">
       {groups.map((g, gi) => {
-        const separator = g.lines.length > 0 && lastHadLines;
-        lastHadLines = g.lines.length > 0;
+        const separator = gi > 0;
         return (
           <div key={gi}>
             {separator ? <p className="py-2 opacity-90">•</p> : null}
