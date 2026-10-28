@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { MessageCircle } from "lucide-react";
 
 import { MichiLogo } from "@/components/MichiLogo";
@@ -20,6 +21,7 @@ const whatsappUrl = `https://wa.me/393298888968?text=${whatsappMessage}`;
 
 export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
   const today = todayISO();
+  const [tab, setTab] = useState<string>("giorno");
   const { data: logos } = useLogos();
   const daily = useQuery({
     queryKey: ["public-menu", today],
@@ -40,7 +42,19 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
     lines: items
       .filter((i) => itemBelongsToSection(i, s))
       .map((i) => ({ name: i.name, price: i.price })),
-  })).filter((g) => g.lines.length > 0);
+  }));
+
+  // Colazione e Aperitivo compaiono solo se hanno almeno una voce attiva.
+  const fixedMenus = fixed.data?.menus ?? [];
+  const visibleFixed = fixedMenus.filter((m) =>
+    (fixed.data?.items ?? []).some(
+      (i) =>
+        i.is_active &&
+        (fixed.data?.sections ?? []).some(
+          (s) => s.menu_id === m.id && s.id === i.section_id,
+        ),
+    ),
+  );
 
   return (
     <div
@@ -68,11 +82,20 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
             </div>
           ))}
         </section>}
-        <Tabs defaultValue={showHours ? "colazione" : "giorno"} className="mt-8">
+        <Tabs
+          value={
+            showHours && visibleFixed.some((m) => m.slug === "colazione")
+              ? "colazione"
+              : "giorno"
+          }
+          onValueChange={setTab}
+          className="mt-8"
+        >
           <TabsList className="mx-auto bg-primary-foreground/10">
             <TabsTrigger value="giorno">{showHours ? "Pranzo" : "Del giorno"}</TabsTrigger>
-            <TabsTrigger value="colazione">Colazione</TabsTrigger>
-            <TabsTrigger value="aperitivo">Aperitivo</TabsTrigger>
+            {visibleFixed.map((m) => (
+              <TabsTrigger key={m.id} value={m.slug}>{m.title}</TabsTrigger>
+            ))}
           </TabsList>
 
           <TabsContent value="giorno" className="mt-8">
@@ -101,7 +124,7 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
           </TabsContent>
 
           {fixed.isError && <p role="alert" className="mt-6">Menu fissi non disponibili. Riprova tra poco.</p>}
-          {(fixed.data?.menus ?? []).map((m) => {
+          {visibleFixed.map((m) => {
             const groups: GraphicGroup[] = (fixed.data?.sections ?? [])
               .filter((s) => s.menu_id === m.id)
               .map((s) => ({
@@ -140,29 +163,34 @@ function Groups({ groups }: { groups: GraphicGroup[] }) {
   if (!groups.length) {
     return <p className="mt-6 text-lg opacity-80">Menu in preparazione.</p>;
   }
+  let lastHadLines = false;
   return (
     <div className="mt-6 space-y-1 text-lg">
-      {groups.map((g, gi) => (
-        <div key={gi}>
-          {gi > 0 ? <p className="py-2 opacity-90">•</p> : null}
-          {g.label ? (
-            <p className="mb-1 text-xs tracking-[0.3em] opacity-80">
-              {g.label.toUpperCase()}
-            </p>
-          ) : null}
-          {g.lines.map((l, li) => (
-            <p key={li} className="text-balance">
-              • {l.name}
-              {l.description ? (
-                <span className="italic opacity-80"> {l.description}</span>
-              ) : null}
-              {l.price !== null && l.price !== undefined ? (
-                <span className="font-bold"> {formatPrice(l.price)}</span>
-              ) : null}
-            </p>
-          ))}
-        </div>
-      ))}
+      {groups.map((g, gi) => {
+        const separator = g.lines.length > 0 && lastHadLines;
+        lastHadLines = g.lines.length > 0;
+        return (
+          <div key={gi}>
+            {separator ? <p className="py-2 opacity-90">•</p> : null}
+            {g.label ? (
+              <p className="mb-1 text-xs tracking-[0.3em] opacity-80">
+                {g.label.toUpperCase()}
+              </p>
+            ) : null}
+            {g.lines.map((l, li) => (
+              <p key={li} className="text-balance">
+                • {l.name}
+                {l.description ? (
+                  <span className="italic opacity-80"> {l.description}</span>
+                ) : null}
+                {l.price !== null && l.price !== undefined ? (
+                  <span className="font-bold"> {formatPrice(l.price)}</span>
+                ) : null}
+              </p>
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
 }

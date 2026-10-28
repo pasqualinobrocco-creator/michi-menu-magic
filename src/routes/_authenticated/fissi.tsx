@@ -64,6 +64,7 @@ function FissiPage() {
 
         {data.menus.map((menu) => {
           const sections = data.sections.filter((s) => s.menu_id === menu.id);
+          // Nella grafica le sottosezioni vuote restano nascoste.
           const groups = sections.map((s) => ({
             label: s.name,
             lines: data.items
@@ -73,7 +74,7 @@ function FissiPage() {
                 description: i.description,
                 price: i.price,
               })),
-          }));
+          })).filter((g) => g.lines.length > 0);
 
           return (
             <TabsContent key={menu.id} value={menu.slug} className="space-y-5">

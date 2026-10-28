@@ -45,7 +45,9 @@ export function MenuCanvas({
   const node = nodeRef ?? localNode;
 
   const base = f.h * 0.032;
-  const visibleGroups = groups.filter((g) => g.lines.length > 0);
+  let lastHadLines = false;
+
+
 
   // Shrink the type until everything fits inside the format, never cropping.
   useLayoutEffect(() => {
@@ -155,9 +157,12 @@ export function MenuCanvas({
                 </div>
               ) : null}
 
-              {visibleGroups.map((group, gi) => (
+              {groups.map((group, gi) => {
+                const separator = group.lines.length > 0 && lastHadLines;
+                lastHadLines = group.lines.length > 0;
+                return (
                 <div key={gi}>
-                  {gi > 0 ? (
+                  {separator ? (
                     <div style={{ margin: "0.55em 0", opacity: 0.9 }}>•</div>
                   ) : null}
                   {group.label ? (
@@ -197,7 +202,8 @@ export function MenuCanvas({
                     </div>
                   ))}
                 </div>
-              ))}
+                );
+              })}
 
               {bread ? (
                 <div
