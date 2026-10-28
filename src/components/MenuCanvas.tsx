@@ -45,7 +45,8 @@ export function MenuCanvas({
   const node = nodeRef ?? localNode;
 
   const base = f.h * 0.032;
-  let lastHadLines = false;
+
+
 
 
 
