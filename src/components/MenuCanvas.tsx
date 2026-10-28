@@ -155,9 +155,12 @@ export function MenuCanvas({
                 </div>
               ) : null}
 
-              {visibleGroups.map((group, gi) => (
+              {groups.map((group, gi) => {
+                const separator = group.lines.length > 0 && lastHadLines;
+                lastHadLines = group.lines.length > 0;
+                return (
                 <div key={gi}>
-                  {gi > 0 ? (
+                  {separator ? (
                     <div style={{ margin: "0.55em 0", opacity: 0.9 }}>•</div>
                   ) : null}
                   {group.label ? (
@@ -197,7 +200,8 @@ export function MenuCanvas({
                     </div>
                   ))}
                 </div>
-              ))}
+                );
+              })}
 
               {bread ? (
                 <div
