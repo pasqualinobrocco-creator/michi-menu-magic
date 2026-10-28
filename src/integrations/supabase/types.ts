@@ -44,6 +44,7 @@ export type Database = {
           position: number
           price: number | null
           section: string
+          section_id: string | null
         }
         Insert: {
           created_at?: string
@@ -53,6 +54,7 @@ export type Database = {
           position?: number
           price?: number | null
           section: string
+          section_id?: string | null
         }
         Update: {
           created_at?: string
@@ -62,6 +64,7 @@ export type Database = {
           position?: number
           price?: number | null
           section?: string
+          section_id?: string | null
         }
         Relationships: [
           {
@@ -71,7 +74,35 @@ export type Database = {
             referencedRelation: "daily_menus"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "daily_menu_items_section_id_fkey"
+            columns: ["section_id"]
+            isOneToOne: false
+            referencedRelation: "daily_menu_sections"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      daily_menu_sections: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          position: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          position?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          position?: number
+        }
+        Relationships: []
       }
       daily_menus: {
         Row: {
