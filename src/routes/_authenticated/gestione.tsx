@@ -23,18 +23,19 @@ import {
   duplicateMenu,
   ensureMenu,
   fetchMenuByDate,
+  fetchMenuSections,
   fetchRecipeBook,
   rememberRecipe,
 } from "@/lib/data";
 import { useLogos } from "@/lib/logos";
 import {
   CLOSING_PRESETS,
-  SECTIONS,
   formatDateDots,
   formatDateLong,
+  itemBelongsToSection,
   todayISO,
   type DailyItem,
-  type SectionKey,
+  type MenuSection,
 } from "@/lib/menu";
 
 type Search = { data?: string };
@@ -72,11 +73,20 @@ function OggiPage() {
     queryKey: ["menu", date],
     queryFn: () => fetchMenuByDate(date),
   });
+  const sectionsQuery = useQuery({
+    queryKey: ["daily-sections"],
+    queryFn: fetchMenuSections,
+  });
 
   const menu = menuQuery.data?.menu ?? null;
   const items = useMemo(() => menuQuery.data?.items ?? [], [menuQuery.data]);
+  const sections = useMemo(
+    () => sectionsQuery.data ?? [],
+    [sectionsQuery.data],
+  );
   const invalidate = () => {
     void qc.invalidateQueries({ queryKey: ["menu", date] });
+    void qc.invalidateQueries({ queryKey: ["daily-sections"] });
     void qc.invalidateQueries({ queryKey: ["archive"] });
     void qc.invalidateQueries({ queryKey: ["recipes"] });
   };
