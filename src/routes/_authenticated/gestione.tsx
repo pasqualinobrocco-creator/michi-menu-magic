@@ -301,7 +301,11 @@ function SectionEditor({
         <SortableList items={items} onReorder={(o) => void reorder(o)}>
           {(item) => (
             <SortableRow key={item.id} id={item.id}>
-              <DishFields item={item} onChanged={onChanged} />
+              <DishFields
+                item={item}
+                sectionName={section.name}
+                onChanged={onChanged}
+              />
             </SortableRow>
           )}
         </SortableList>
@@ -334,9 +338,11 @@ function SectionEditor({
 
 function DishFields({
   item,
+  sectionName,
   onChanged,
 }: {
   item: DailyItem;
+  sectionName: string;
   onChanged: () => void;
 }) {
   const [name, setName] = useState(item.name);
@@ -354,7 +360,7 @@ function DishFields({
       .from("daily_menu_items")
       .update({ name: name.trim(), price: parsed })
       .eq("id", item.id);
-    await rememberRecipe(name, parsed, item.section);
+    await rememberRecipe(name, parsed, sectionName);
     onChanged();
   };
 
@@ -394,7 +400,7 @@ function RecipeBookDialog({
   section,
   onPick,
 }: {
-  section: SectionKey;
+  section: string;
   onPick: (name: string, price: number | null) => void;
 }) {
   const [open, setOpen] = useState(false);
