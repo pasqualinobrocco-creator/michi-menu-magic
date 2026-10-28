@@ -7,8 +7,18 @@ import type {
   FixedItem,
   FixedMenu,
   FixedSection,
+  MenuSection,
   OpeningHour,
 } from "@/lib/menu";
+
+export async function fetchMenuSections(): Promise<MenuSection[]> {
+  const { data, error } = await supabase
+    .from("daily_menu_sections")
+    .select("*")
+    .order("position");
+  if (error) throw error;
+  return (data ?? []) as MenuSection[];
+}
 
 export type PageVisit = {
   id: string;
@@ -121,6 +131,7 @@ export async function duplicateMenu(fromDate: string, toDate: string) {
       source.items.map((i) => ({
         menu_id: target.id,
         section: i.section,
+        section_id: i.section_id,
         name: i.name,
         price: i.price,
         position: i.position,
