@@ -75,7 +75,7 @@ function PricesPage() {
       })}
     </section>
     {data.fixed.menus.map(menu => <section key={menu.id} className="border-t border-border py-8">
-      <h2 className="mb-5 font-serif text-2xl">{menu.title}</h2>
+      <h2 className="mb-5 font-serif text-2xl">{menu.title.toUpperCase()}</h2>
       {data.fixed.sections.filter(s => s.menu_id === menu.id).map(s => {
         const items = data.fixed.items.filter(i => i.section_id === s.id);
         return <div key={s.id} className="mt-5"><h3 className="text-sm text-primary">{s.name}</h3>{items.length ? items.map(i => <PriceRow key={`${i.id}-${i.price}`} {...i} inactive={!i.is_active} table="fixed_menu_items" />) : <p className="py-3 text-sm text-muted-foreground">Nessuna voce.</p>}</div>;

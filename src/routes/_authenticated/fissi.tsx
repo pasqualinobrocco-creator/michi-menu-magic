@@ -22,13 +22,15 @@ export const Route = createFileRoute("/_authenticated/fissi")({
       { title: "Menu fissi — Michì Menu Manager" },
       {
         name: "description",
-        content: "Gestisci i menu Colazione e Aperitivo di MICHÍ — Caffè & Cucina.",
+        content: "Gestisci i menu COLAZIONE, BRUNCH e APERITIVO di MICHÍ — Caffè & Cucina.",
       },
       { property: "og:title", content: "Menu fissi — Michì Menu Manager" },
       {
         property: "og:description",
-        content: "Gestisci i menu Colazione e Aperitivo di MICHÍ — Caffè & Cucina.",
+        content: "Gestisci i menu COLAZIONE, BRUNCH e APERITIVO di MICHÍ — Caffè & Cucina.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: FissiPage,
@@ -57,7 +59,7 @@ function FissiPage() {
         <TabsList className="w-full">
           {data.menus.map((m) => (
             <TabsTrigger key={m.id} value={m.slug} className="flex-1">
-              {m.title}
+              {m.title.toUpperCase()}
             </TabsTrigger>
           ))}
         </TabsList>
@@ -90,10 +92,10 @@ function FissiPage() {
               <AddSection menuId={menu.id} count={sections.length} onChanged={invalidate} />
 
               <div className="rounded-xl border border-border bg-card p-4">
-                <h2 className="mb-3 font-serif text-2xl">Grafica {menu.title}</h2>
+                <h2 className="mb-3 font-serif text-2xl">Grafica {menu.title.toUpperCase()}</h2>
                 <GraphicStudio
                   fileBase={`michi-${menu.slug}`}
-                  title={menu.title}
+                  title={menu.title.toUpperCase()}
                   groups={groups}
                   closing={menu.closing_message}
                   logoSrc={logos?.light ?? null}
