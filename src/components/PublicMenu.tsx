@@ -21,7 +21,7 @@ const whatsappUrl = `https://wa.me/393298888968?text=${whatsappMessage}`;
 
 export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
   const today = todayISO();
-  const [tab, setTab] = useState<string>("giorno");
+  const [tab, setTab] = useState<string | null>(null);
   const { data: logos } = useLogos();
   const daily = useQuery({
     queryKey: ["public-menu", today],
@@ -86,9 +86,11 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
         </section>}
         <Tabs
           value={
-            showHours && visibleFixed.some((m) => m.slug === "colazione")
-              ? "colazione"
-              : "giorno"
+            tab === "giorno" || visibleFixed.some((m) => m.slug === tab)
+              ? tab ?? "giorno"
+              : showHours && visibleFixed.some((m) => m.slug === "colazione")
+                ? "colazione"
+                : "giorno"
           }
           onValueChange={setTab}
           className="mt-8"
