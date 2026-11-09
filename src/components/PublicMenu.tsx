@@ -98,7 +98,7 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
           <TabsList className="mx-auto bg-primary-foreground/10">
             <TabsTrigger value="giorno">{showHours ? "Pranzo" : "Del giorno"}</TabsTrigger>
             {visibleFixed.map((m) => (
-              <TabsTrigger key={m.id} value={m.slug}>{m.title}</TabsTrigger>
+              <TabsTrigger key={m.id} value={m.slug}>{m.title.toUpperCase()}</TabsTrigger>
             ))}
           </TabsList>
 
@@ -144,7 +144,7 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
               .filter((g) => g.lines.length > 0);
             return (
               <TabsContent key={m.id} value={m.slug} className="mt-8">
-                <p className="font-bold tracking-[0.3em]">{m.title}</p>
+                <p className="font-bold tracking-[0.3em]">{m.title.toUpperCase()}</p>
                 <Groups groups={groups} />
                 {m.closing_message ? (
                   <p className="mt-6 text-3xl text-gold" >
