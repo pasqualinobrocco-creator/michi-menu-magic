@@ -96,7 +96,7 @@ export function PublicMenu({ showHours = false }: { showHours?: boolean }) {
           className="mt-8"
         >
           <TabsList className="mx-auto bg-primary-foreground/10">
-            <TabsTrigger value="giorno">{showHours ? "Pranzo" : "Del giorno"}</TabsTrigger>
+            <TabsTrigger value="giorno">{showHours ? "PRANZO" : "DEL GIORNO"}</TabsTrigger>
             {visibleFixed.map((m) => (
               <TabsTrigger key={m.id} value={m.slug}>{m.title.toUpperCase()}</TabsTrigger>
             ))}
@@ -186,7 +186,7 @@ function Groups({ groups }: { groups: GraphicGroup[] }) {
                   <span className="italic opacity-80"> {l.description}</span>
                 ) : null}
                 {l.price !== null && l.price !== undefined ? (
-                  <span className="font-bold"> {formatPrice(l.price)}</span>
+                  <span className="ml-2 inline-block whitespace-nowrap font-sans text-base font-semibold tabular-nums text-primary-foreground">{formatPrice(l.price)}</span>
                 ) : null}
               </p>
             ))}
