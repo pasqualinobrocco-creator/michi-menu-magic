@@ -186,7 +186,7 @@ function Groups({ groups }: { groups: GraphicGroup[] }) {
                   <span className="italic opacity-80"> {l.description}</span>
                 ) : null}
                 {l.price !== null && l.price !== undefined ? (
-                  <span className="ml-2 inline-block whitespace-nowrap font-sans text-base font-semibold tabular-nums text-primary-foreground">{formatPrice(l.price)}</span>
+                  <span className="ml-2 inline-block whitespace-nowrap font-bold tabular-nums text-primary-foreground">{formatPrice(l.price)}</span>
                 ) : null}
               </p>
             ))}
