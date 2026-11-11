@@ -126,7 +126,7 @@ export function formatDateLong(iso: string): string {
 export function formatPrice(p: number | null): string {
   if (p === null || p === undefined) return "";
   const n = Number(p);
-  return `${Number.isInteger(n) ? String(n) : n.toFixed(2).replace(".", ",")} €`;
+  return Number.isInteger(n) ? String(n) : n.toFixed(2).replace(".", ",");
 }
 
 export function groupsToPlainText(opts: {
